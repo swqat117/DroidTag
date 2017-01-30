@@ -1,0 +1,106 @@
+
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'org.greenrobot.greendao'
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+
+    }
+
+
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.0'
+    }
+}
+
+
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
+
+    defaultConfig {
+
+        applicationId "com.quascenta.petersroad"
+        minSdkVersion 19
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+configurations{
+    all*.exclude module: 'joda-time-2.9.5-no-tzdb'
+}
+
+ext {
+    okhttpVersion = "3.0.1"
+    retrofitVersion = "2.0.0"
+
+    supportLibVersion = "24.2.1"
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.trello:rxlifecycle:0.5.0'
+    compile 'com.trello:rxlifecycle-components:0.5.0'
+    compile 'com.github.pedrovgs:draggablepanel:1.9'
+    compile 'com.github.pedrovgs:renderers:3.2.0'
+    compile 'me.angrybyte.slider:slider:1.3.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.android.support:cardview-v7:25.1.0'
+    compile 'com.jakewharton.rxrelay:rxrelay:1.2.0'
+    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    compile "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+    compile "com.squareup.okhttp3:okhttp-urlconnection:${okhttpVersion}"
+    compile 'com.mcxiaoke.volley:library:1.0.19'
+    compile 'io.reactivex:rxjava-math:1.0.0'
+    compile 'com.polidea.rxandroidble:rxandroidble:1.0.2'
+    compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+    compile 'com.akexorcist:bluetoothspp:1.0.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.wefika:collapse-calendar-view:0.1.0'
+    compile 'de.hdodenhof:circleimageview:1.3.0'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.5'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    androidTestCompile 'com.android.support:support-annotations:25.1.0'
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+    compile 'org.greenrobot:greendao:3.2.0'
+    compile files('libs/hellocharts-library-1.5.8.jar')
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile files('libs/facebook-android-sdk-4.4.0-sources.jar')
+    compile files('libs/greendao-1.3.7.jar')
+}
