@@ -83,7 +83,6 @@ dependencies {
     compile 'io.reactivex:rxjava-math:1.0.0'
     compile 'com.polidea.rxandroidble:rxandroidble:1.0.2'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
-    compile 'com.akexorcist:bluetoothspp:1.0.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.wefika:collapse-calendar-view:0.1.0'
     compile 'de.hdodenhof:circleimageview:1.3.0'
@@ -100,7 +99,5 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
     compile 'org.greenrobot:greendao:3.2.0'
     compile files('libs/hellocharts-library-1.5.8.jar')
-    compile 'com.facebook.android:facebook-android-sdk:4.+'
-    compile files('libs/facebook-android-sdk-4.4.0-sources.jar')
     compile files('libs/greendao-1.3.7.jar')
 }

@@ -12,6 +12,13 @@
     </style>
 
     <!-- Main Activity -->
+    <declare-styleable name="LovelyView">
+        <attr name="leftLabel" format="string" />
+        <attr name="rightLabel" format="string" />
+        <attr name="leftLabelStyle" format="reference" />
+        <attr name="rightLabelStyle" format="reference" />
+    </declare-styleable>
+
 
     <style name="main_activity_button_title">
         <item name="android:textSize">@dimen/button_title_text_size</item>
@@ -42,6 +49,12 @@
     <style name="episodes_list_view_header">
         <item name="android:background">@color/hard_grey</item>
         <item name="android:textColor">@color/text_grey</item>
+        <item name="android:padding">@dimen/episodes_header_padding</item>
+        <item name="android:paddingLeft">@dimen/episodes_header_padding_left</item>
+    </style>
+
+    <style name="devices_list_view_header">
+        <item name="android:background">@color/hard_grey</item>
         <item name="android:padding">@dimen/episodes_header_padding</item>
         <item name="android:paddingLeft">@dimen/episodes_header_padding_left</item>
     </style>
@@ -87,12 +100,12 @@
     <dimen name="top_fragment_height">200dip</dimen>
     <dimen name="top_fragment_margin">10dip</dimen>
     <dimen name="place_renderer_height">200dip</dimen>
-    <dimen name="tv_show_fan_art_height">150dip</dimen>
+    <dimen name="tv_show_fan_art_height">180dip</dimen>
     <dimen name="button_title_padding_left_right">10dip</dimen>
     <dimen name="button_title_text_size">18sp</dimen>
     <dimen name="button_title_margin_top">10dip</dimen>
-    <item name="x_scale_factor" format="float" type="dimen">2.3</item>
-    <item name="y_scale_factor" format="float" type="dimen">2.3</item>
+    <item name="x_scale_factor" format="float" type="dimen">1.5</item>
+    <item name="y_scale_factor" format="float" type="dimen">1.5</item>
     <dimen name="grid_view_vertical_spacing">10dip</dimen>
     <dimen name="grid_view_horizontal_spacing">10dip</dimen>
     <dimen name="grid_view_margin">10dip</dimen>
@@ -100,12 +113,12 @@
     <dimen name="episodes_header_padding">10dip</dimen>
     <dimen name="episodes_header_padding_left">16dip</dimen>
     <dimen name="episode_padding_left_right">6dip</dimen>
-    <dimen name="episode_number">38sp</dimen>
-    <dimen name="episode_title">20sp</dimen>
+    <dimen name="episode_number">22sp</dimen>
+    <dimen name="episode_title">14sp</dimen>
     <dimen name="episode_title_margin_top">6dip</dimen>
     <dimen name="episode_title_margin_left">8dip</dimen>
-    <dimen name="episode_publish_date_margin_left">8dip</dimen>
-    <dimen name="episode_publish_date_margin_bottom">2dip</dimen>
+    <dimen name="episode_publish_date_margin_left">2dip</dimen>
+    <dimen name="episode_publish_date_margin_bottom">0dip</dimen>
     <dimen name="place_title_margin">5dip</dimen>
     <dimen name="tv_show_title_margin_left_top">5dip</dimen>
     <dimen name="tv_show_margin_left">5dip</dimen>

@@ -2,6 +2,8 @@ package com.quascenta.petersroad.droidtag.SensorCollection.model;
 
 import org.joda.time.DateTime;
 
+import java.util.Random;
+
 /**
  * Created by AKSHAY on 1/30/2017.
  */
@@ -21,8 +23,16 @@ public class SensorViewModel {
         this.dateTime = dateTime;
         this.number_of_temp_sensors = number_of_temp_sensors;
         this.number_of_rh_sensors = number_of_rh_sensors;
-        temp_sensor = new float[number_of_temp_sensors];
+        temp_sensor = generateSensorValues();
         rh_sensor = new float[number_of_rh_sensors];
+    }
+
+    public static float[] floatTemp(int x, int min, int max) {
+        float[] temp = new float[x];
+        for (int i = 0; i < x; i++) {
+            temp[i] = (min + max) / 2 + new Random().nextFloat();
+        }
+        return temp;
     }
 
     public DateTime getDateTime() {
@@ -80,4 +90,54 @@ public class SensorViewModel {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public float[] generateSensorValues() {
+        if (number_of_temp_sensors != 0) {
+
+            return floatTemp(number_of_temp_sensors, 25, 55);
+        }
+        return null;
+    }
+
+    public float[] generateSensorValues(int l, int min, int max) {
+        if (l == number_of_temp_sensors) {
+
+            temp_sensor = floatTemp(number_of_temp_sensors, min, max);
+        }
+        return temp_sensor;
+    }
+
+    public String getMonth() {
+        int x = dateTime.getMonthOfYear();
+        switch (x) {
+            case 1:
+                return "Jan";
+            case 2:
+                return "Feb";
+            case 3:
+                return "Mar";
+            case 4:
+                return "Apr";
+            case 5:
+                return "May";
+            case 6:
+                return "Jun";
+            case 7:
+                return "Jul";
+            case 8:
+                return "Aug";
+            case 9:
+                return "Sep";
+            case 10:
+                return "Oct";
+            case 11:
+                return "Nov";
+            case 12:
+                return "Dec";
+            default:
+                return "";
+        }
+
+    }
+
 }

@@ -21,6 +21,21 @@ public class DeviceViewModel {
 
   private SensorCollection sensorCollection;
 
+    private String destination_company, start_company;
+
+
+    public DeviceViewModel(long id, String title, DateTime start_time, DateTime end_time, String start_from, String destination_to, String destination_company, String start_company) {
+        this.DEVICE_ID = id;
+        this.title = title;
+        this.start_time = start_time;
+        this.end_time = end_time;
+        this.start_from = start_from;
+        this.destination_to = destination_to;
+        this.destination_company = destination_company;
+        this.start_company = start_company;
+
+        sensorCollection = new SensorCollection();
+    }
 
     public String getDestination_to() {
         return destination_to;
@@ -78,17 +93,29 @@ public class DeviceViewModel {
         this.title = title;
     }
 
-    public DeviceViewModel(long id, String title, DateTime start_time, DateTime end_time, String start_from, String destination_to, SensorCollection sensorCollection){
-                this.DEVICE_ID = id;
-                this.title = title;
-                this.start_time = start_time;
-                this.end_time = end_time;
-                this.start_from = start_from;
-                this.destination_to = destination_to;
-                this.sensorCollection = sensorCollection;
-            }
+    public String getDestination_company() {
+        return destination_company;
+    }
 
+    public void setDestination_company(String destination_company) {
+        this.destination_company = destination_company;
+    }
 
+    public String getStart_company() {
+        return start_company;
+    }
+
+    public void setStart_company(String start_company) {
+        this.start_company = start_company;
+    }
+
+    public void addSensor(SensorViewModel sensorViewModel) {
+        sensorCollection.add(sensorViewModel);
+    }
+
+    public void differenceinMonths() {
+
+    }
 
 
 

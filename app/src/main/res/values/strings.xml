@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">DroidTag</string>
     <string name="tv_shows_sample_activity_title">TV Shows</string>
+    <string name="leftarrow"><![CDATA[<]]></string>
+    <string name="rightarrow"><![CDATA[>]]></string>
 </resources>

@@ -1,8 +1,8 @@
 package com.quascenta.petersroad.droidtag;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -11,21 +11,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import com.github.pedrovgs.DraggableListener;
+import com.github.pedrovgs.DraggableView;
 import com.pedrogomez.renderers.Renderer;
 import com.pedrogomez.renderers.RendererAdapter;
-import com.pedrogomez.renderers.RendererBuilder;
 import com.quascenta.petersroad.droidtag.viewmodel.EpisodeViewModel;
 import com.quascenta.petersroad.droidtag.viewmodel.TvShowCollectionViewModel;
 import com.quascenta.petersroad.droidtag.viewmodel.TvShowViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.github.pedrovgs.DraggableListener;
-import com.github.pedrovgs.DraggableView;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by AKSHAY on 1/30/2017.
@@ -44,6 +44,7 @@ public class TvShowsActivity extends BaseActivity {
     DraggableView draggableView;
 
     TextView header;
+    HeaderView headerView;
 
     private TvShowViewModel tvShowSelected;
 
@@ -182,10 +183,10 @@ public class TvShowsActivity extends BaseActivity {
      */
     private void renderEpisodesHeader(TvShowViewModel tvShow) {
         episodesListView.removeHeaderView(header);
-        header = (TextView) getLayoutInflater().inflate(R.layout.episode_header, null);
+        headerView = new HeaderView(this);
         header.setText(tvShow.getTitle().toUpperCase() + " - SEASON 1");
         episodesListView.setAdapter(null);
-        episodesListView.addHeaderView(header);
+        episodesListView.addHeaderView(headerView);
         episodesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override public void onItemClick(AdapterView<?> adapterView, View view, int position,
                                               long id) {

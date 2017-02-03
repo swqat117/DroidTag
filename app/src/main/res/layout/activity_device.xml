@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1f1f1">
+
+    <!-- Grid View -->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_devices"
+        style="@style/tv_show_grid_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <!-- Draggable View -->
+
+    <com.github.pedrovgs.DraggableView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:draggable_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/draggable_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/black"
+        draggable_view:bottom_view_id="@+id/x"
+        draggable_view:enable_click_to_maximize_view="true"
+        draggable_view:enable_click_to_minimize_view="true"
+        draggable_view:top_view_id="@+id/chart_frame"
+        draggable_view:top_view_margin_bottom="@dimen/top_fragment_margin"
+        draggable_view:top_view_margin_right="@dimen/top_fragment_margin"
+        draggable_view:top_view_x_scale_factor="@dimen/x_scale_factor"
+        draggable_view:top_view_y_scale_factor="@dimen/y_scale_factor">
+
+        <!-- ListView Episodes -->
+        <RelativeLayout
+            android:id="@+id/x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line2">
+
+            <lecho.lib.hellocharts.view.PreviewLineChartView
+                android:id="@+id/chart_preview"
+                android:layout_width="match_parent"
+                android:layout_height="56dip"
+                android:background="@color/colorPrimaryDark"
+                android:padding="2dip"></lecho.lib.hellocharts.view.PreviewLineChartView>
+
+            <View
+                android:id="@+id/line3"
+                android:layout_width="match_parent"
+                android:layout_height="2dip"
+                android:layout_below="@+id/chart_preview"
+
+                android:layout_marginTop="1dip"
+                android:background="@android:color/darker_gray" />
+
+            <ExpandableListView
+                android:id="@+id/lv_episodes"
+                style="@style/episodes_list_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/chart_preview"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="0.5dp"
+                android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+
+        </RelativeLayout>
+
+
+        <FrameLayout
+            android:id="@+id/chart_frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <lecho.lib.hellocharts.view.LineChartView
+                android:id="@+id/cubiclinechart"
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:background="@color/colorPrimary"
+
+                android:padding="1dip" />
+        </FrameLayout>
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:layout_below="@+id/chart_frame"
+            android:layout_marginTop="1dip"
+            android:background="@android:color/darker_gray" />
+
+    </com.github.pedrovgs.DraggableView>
+
+</RelativeLayout>

@@ -23,7 +23,7 @@ import java.util.Collection;
 
 /**
  * RendererBuilder implementation created to map TvShowViewModel with TvShowRenderer
- * implementations. More info in this link: {@link https://github.com/pedrovgs/Renderers}
+ * implementations. More info in this link: {@link ://github.com/pedrovgs/Renderers}
  *
  * @author Pedro Vicente Gómez Sánchez.
  */
