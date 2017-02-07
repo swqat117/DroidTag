@@ -20,6 +20,7 @@ import com.quascenta.petersroad.droidtag.BaseActivity;
 import com.quascenta.petersroad.droidtag.HeaderView;
 import com.quascenta.petersroad.droidtag.R;
 import com.quascenta.petersroad.droidtag.RecyclerItemClickListener;
+import com.quascenta.petersroad.droidtag.SensorCollection.ObjectGenerators.ParentLevel;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewCollection;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewModel;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.SensorViewModel;
@@ -83,8 +84,9 @@ public class DevicesActivity1 extends BaseActivity {
         startDate = new DateTime(2016, 6, 10, 5, 0, 0, 0);
         endDate = new DateTime(2016, 10, 10, 5, 0, 0, 0);
         headerView = new HeaderView(this);
-        // expandableListView.setAdapter(new ParentLevel(this));
+
         deviceViewModelCollection = new DeviceViewCollection(startDate, endDate);
+
         builder = provideTvShowCollectionRendererBuilder(this);
         draggableView = (DraggableView) findViewById(R.id.draggable_view);
         adapter = provideTvShowRendererAdapter(builder, deviceViewModelCollection);
@@ -173,9 +175,17 @@ public class DevicesActivity1 extends BaseActivity {
                     public void onItemClick(View view, int position) {
                         DeviceViewModel tvShow = adapter.getItem(position);
                         tvShowSelected = tvShow;
+                        ParentLevel parentLevel = new ParentLevel(getApplicationContext(), tvShow);
+                        expandableListView.setAdapter(new ParentLevel(getApplicationContext(), tvShow));
+                        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                            @Override
+                            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
 
+                                return false;
+                            }
+                        });
                         initChart();
-
+                        renderEpisodesHeader1(tvShow);
                         // renderEpisodesHeader(tvShow);
                         // renderEpisodes(tvShow);
                         draggableView.setVisibility(View.VISIBLE);
@@ -301,6 +311,18 @@ public class DevicesActivity1 extends BaseActivity {
                     }
                 }
             });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void renderEpisodesHeader1(DeviceViewModel tvShow) {
+        try {
+            expandableListView.removeHeaderView(headerView);
+            header = getLayoutInflater().inflate(R.layout.view_header, null);
+            expandableListView.addHeaderView(headerView);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

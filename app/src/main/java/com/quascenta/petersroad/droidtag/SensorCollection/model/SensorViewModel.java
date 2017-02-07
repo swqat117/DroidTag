@@ -16,15 +16,20 @@ public class SensorViewModel {
     private  int number_of_temp_sensors;
     private  int number_of_rh_sensors;
     private float[] rh_sensor;
+    private int count;
 
+    public SensorViewModel() {
 
-    public SensorViewModel(String title,DateTime dateTime, int number_of_temp_sensors,int number_of_rh_sensors){
+    }
+
+    public SensorViewModel(String title, DateTime dateTime, int number_of_temp_sensors, int number_of_rh_sensors) {
         this.title = title;
         this.dateTime = dateTime;
         this.number_of_temp_sensors = number_of_temp_sensors;
         this.number_of_rh_sensors = number_of_rh_sensors;
         temp_sensor = generateSensorValues();
         rh_sensor = new float[number_of_rh_sensors];
+        count = 0;
     }
 
     public static float[] floatTemp(int x, int min, int max) {
@@ -33,6 +38,14 @@ public class SensorViewModel {
             temp[i] = (min + max) / 2 + new Random().nextFloat();
         }
         return temp;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public DateTime getDateTime() {

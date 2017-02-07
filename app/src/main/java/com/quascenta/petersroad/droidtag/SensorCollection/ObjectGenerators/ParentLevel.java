@@ -9,21 +9,34 @@ import android.widget.TextView;
 
 import com.quascenta.petersroad.droidtag.R;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewCollection;
+import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewModel;
 
 /**
  * Created by AKSHAY on 2/3/2017.
  */
 
 public class ParentLevel extends BaseExpandableListAdapter {
-    public static final int FIRST_LEVEL_COUNT = 6;
+    public static final String TAG = "ParentLevel";
+    public static final int FIRST_LEVEL_COUNT = 10;
     public static final int SECOND_LEVEL_COUNT = 4;
     public static final int THIRD_LEVEL_COUNT = 20;
+    TextView text;
+    SecondLevelExpandableListView secondLevelELV;
+    String x[] = new String[10];
     private Context context;
     private DeviceViewCollection deviceViewCollection;
-
+    private DeviceViewModel deviceViewModel;
+    private String MONTH;
     public ParentLevel(Context context, DeviceViewCollection deviceViewCollection) {
         this.context = context;
         this.deviceViewCollection = deviceViewCollection;
+
+    }
+
+    public ParentLevel(Context context, DeviceViewModel tvShow) {
+        this.context = context;
+        deviceViewModel = tvShow;
+
 
     }
 
@@ -47,17 +60,18 @@ public class ParentLevel extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return 0;
+        return SECOND_LEVEL_COUNT;
     }
 
     @Override
     public Object getGroup(int groupPosition) {
+        System.out.println("Id ;" + groupPosition);
         return groupPosition;
     }
 
     @Override
     public int getGroupCount() {
-        return FIRST_LEVEL_COUNT;
+        return deviceViewModel.getMonth_count();
     }
 
     @Override
@@ -70,9 +84,18 @@ public class ParentLevel extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item, null);
-            TextView text = (TextView) convertView.findViewById(R.id.sensor_number);
+            text = (TextView) convertView.findViewById(R.id.sensor_number);
             TextView text2 = (TextView) convertView.findViewById(R.id.sensor_temp_value1);
             TextView text3 = (TextView) convertView.findViewById(R.id.sensor_rh_value1);
+            String x[] = new String[10];
+            x = deviceViewModel.getListOfMonths();
+            text.setText(x[groupPosition]);
+            text2.setText(String.format("%.2f", deviceViewModel.getSensorCollection().get(0).getTemp_sensor_Sensor(0)));
+            text3.setText(String.format("%.2f", deviceViewModel.getSensorCollection().get(0).getTemp_sensor_Sensor(1)));
+
+
+
+
 
 
         }

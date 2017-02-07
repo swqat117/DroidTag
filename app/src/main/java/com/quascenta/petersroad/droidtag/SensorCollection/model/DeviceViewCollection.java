@@ -1,12 +1,11 @@
 package com.quascenta.petersroad.droidtag.SensorCollection.model;
 
-import android.util.Log;
-
 import com.pedrogomez.renderers.AdapteeCollection;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -88,11 +87,12 @@ public class DeviceViewCollection implements AdapteeCollection<DeviceViewModel> 
 
     private DeviceViewModel addSingle(long id, String devicename, String from, DateTime startdate, DateTime enddate, String to, String sensortitle, int temp_no, int rh_no, String from_Company, String destination_company) {
         DeviceViewModel deviceViewModel = new DeviceViewModel(id, devicename, startdate, enddate, from, to, from_Company, destination_company);
-
+        ArrayList<SensorViewModel> monthsView = new ArrayList<>();
         for (LocalDate date = startdate.toLocalDate(); date.isBefore(enddate.toLocalDate()); date = date.plusDays(1)) {
-            Log.d("Add Single ", "passed" + date.toDateTimeAtCurrentTime().toString());
+            if (date.monthOfYear().getAsShortText().toLowerCase().equals("jan"))
+                monthsView.add(date.getDayOfMonth(), new SensorViewModel(sensortitle + i1, date.toDateTimeAtCurrentTime(), temp_no, rh_no));
             deviceViewModel.addSensor(new SensorViewModel(sensortitle + i1, date.toDateTimeAtCurrentTime(), temp_no, rh_no));
-            Log.d("Add Single ", "passed2");
+
         }
         return deviceViewModel;
     }

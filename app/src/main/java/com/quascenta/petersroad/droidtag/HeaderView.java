@@ -2,6 +2,7 @@ package com.quascenta.petersroad.droidtag;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,17 +45,17 @@ public class HeaderView extends LinearLayout {
 
     @OnClick(R.id.tv_device_header_timestamp)
     public void onClick_Timestamp() {
-
+        Log.d("onclick timestamp", "Passed");
     }
 
     @OnClick(R.id.tv_device_header_Temp_sensor)
     public void onClick_temp() {
-
+        Log.d(" onClick_temp", "Passed");
     }
 
     @OnClick(R.id.tv_device_header_Rh_sensor)
     public void onClick_RH() {
-
+        Log.d(" onClick_RH", "Passed");
     }
 
 

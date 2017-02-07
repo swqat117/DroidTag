@@ -1,6 +1,10 @@
 package com.quascenta.petersroad.droidtag.SensorCollection.model;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+
+import java.util.ArrayList;
 
 /**
  * Created by AKSHAY on 1/30/2017.
@@ -10,19 +14,23 @@ public class DeviceViewModel {
   private long DEVICE_ID;
 
   private String title;
-
-  private DateTime start_time;
+    private DateTime start_time;
 
   private DateTime end_time;
 
   private String start_from;
 
+
+    private int month_count;
+
   private String destination_to;
 
   private SensorCollection sensorCollection;
 
-    private String destination_company, start_company;
+    private ArrayList<SensorCollection> month_collections;
 
+    private String destination_company, start_company;
+    private String[] ListOfMonths;
 
     public DeviceViewModel(long id, String title, DateTime start_time, DateTime end_time, String start_from, String destination_to, String destination_company, String start_company) {
         this.DEVICE_ID = id;
@@ -33,8 +41,39 @@ public class DeviceViewModel {
         this.destination_to = destination_to;
         this.destination_company = destination_company;
         this.start_company = start_company;
-
+        ListOfMonths = differenceinMonths();
         sensorCollection = new SensorCollection();
+
+
+    }
+
+    public String[] getListOfMonths() {
+        return ListOfMonths;
+    }
+
+    public void setListOfMonths(String[] listOfMonths) {
+        ListOfMonths = listOfMonths;
+    }
+
+    public SensorCollection getMonthCollection(String _month) {
+        SensorCollection month_Collection = new SensorCollection();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < sensorCollection.size(); i++) {
+                    LocalDate date = sensorCollection.get(i).getDateTime().toLocalDate();
+                    String month = date.monthOfYear().getAsShortText().toLowerCase();
+                    if (month == _month) {
+
+                        month_Collection.add(sensorCollection.get(i));
+                        System.out.println("\n---------Date time" + sensorCollection.get(i).getDateTime().toString());
+                        System.out.println("\n---------count-----" + i);
+                    }
+                }
+            }
+        }).start();
+
+        return month_Collection;
     }
 
     public String getDestination_to() {
@@ -113,11 +152,95 @@ public class DeviceViewModel {
         sensorCollection.add(sensorViewModel);
     }
 
-    public void differenceinMonths() {
+    public int getMonth_count() {
+        return month_count;
+    }
+
+    public void setMonth_count(int month_count) {
+        this.month_count = month_count;
+    }
+
+    public String[] differenceinMonths() {
+        String[] x = new String[10];
+        int i = 0;
+        LocalDate l1 = start_time.toLocalDate();
+        LocalDate l2 = end_time.toLocalDate();
+        while (l1.isBefore(l2)) {
+
+            System.out.println(l1.toString("MMM/yyyy"));
+            x[month_count] = getMonth(l1.toDateTimeAtCurrentTime());
+            month_count++;
+            l1 = l1.plus(Period.months(1));
+
+
+        }
+        return x;
 
     }
 
+    public String getMonth(DateTime dateTime) {
+        int x = dateTime.getMonthOfYear();
+        switch (x) {
+            case 1:
+                return "Jan";
+            case 2:
+                return "Feb";
+            case 3:
+                return "Mar";
+            case 4:
+                return "Apr";
+            case 5:
+                return "May";
+            case 6:
+                return "Jun";
+            case 7:
+                return "Jul";
+            case 8:
+                return "Aug";
+            case 9:
+                return "Sep";
+            case 10:
+                return "Oct";
+            case 11:
+                return "Nov";
+            case 12:
+                return "Dec";
+            default:
+                return "";
+        }
+    }
+
+    public String getMonth(int x) {
+
+        switch (x) {
+            case 1:
+                return "Jan";
+            case 2:
+                return "Feb";
+            case 3:
+                return "Mar";
+            case 4:
+                return "Apr";
+            case 5:
+                return "May";
+            case 6:
+                return "Jun";
+            case 7:
+                return "Jul";
+            case 8:
+                return "Aug";
+            case 9:
+                return "Sep";
+            case 10:
+                return "Oct";
+            case 11:
+                return "Nov";
+            case 12:
+                return "Dec";
+            default:
+                return "";
+        }
 
 
-
+    }
 }
