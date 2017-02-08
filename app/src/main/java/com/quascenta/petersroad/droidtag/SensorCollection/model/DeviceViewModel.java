@@ -47,6 +47,12 @@ public class DeviceViewModel {
 
     }
 
+    public void AddMonth(int i) {
+        month_collections = new ArrayList<SensorCollection>();
+        month_collections.add(i, sensorCollection);
+
+    }
+
     public String[] getListOfMonths() {
         return ListOfMonths;
     }

@@ -282,7 +282,8 @@ public class DevicesActivity extends BaseActivity {
             episodesListView.removeHeaderView(headerView);
             //   header = (View) getLayoutInflater().inflate(R.layout.view_header, null);
             episodesListView.setAdapter(null);
-            episodesListView.addHeaderView(headerView);
+            episodesListView.addHeaderView(headerView, null, false);
+
 
             episodesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

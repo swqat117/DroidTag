@@ -1,5 +1,9 @@
 package com.quascenta.petersroad.droidtag.SensorCollection;
 
+/**
+ * Created by AKSHAY on 2/8/2017.
+ */
+
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,10 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
-import android.widget.AdapterView;
-import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.github.pedrovgs.DraggableListener;
 import com.github.pedrovgs.DraggableView;
@@ -20,10 +20,8 @@ import com.quascenta.petersroad.droidtag.BaseActivity;
 import com.quascenta.petersroad.droidtag.HeaderView;
 import com.quascenta.petersroad.droidtag.R;
 import com.quascenta.petersroad.droidtag.RecyclerItemClickListener;
-import com.quascenta.petersroad.droidtag.SensorCollection.ObjectGenerators.ParentLevel;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewCollection;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewModel;
-import com.quascenta.petersroad.droidtag.SensorCollection.model.SensorViewModel;
 
 import org.joda.time.DateTime;
 
@@ -45,6 +43,8 @@ import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.LineChartView;
 import lecho.lib.hellocharts.view.PreviewLineChartView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+
 
 /**
  * Created by AKSHAY on 1/31/2017.
@@ -62,9 +62,7 @@ public class DevicesActivity1 extends BaseActivity {
     LineChartView chart;
     PreviewLineChartView previewChart;
     LineChartData data, previewdata;
-    ListView episodesListView;
-    @Bind(R.id.lv_episodes)
-    ExpandableListView expandableListView;
+    MyAdapter adapte1r;
     DraggableView draggableView;
     HeaderView headerView;
     View header;
@@ -84,9 +82,7 @@ public class DevicesActivity1 extends BaseActivity {
         startDate = new DateTime(2016, 6, 10, 5, 0, 0, 0);
         endDate = new DateTime(2016, 10, 10, 5, 0, 0, 0);
         headerView = new HeaderView(this);
-
         deviceViewModelCollection = new DeviceViewCollection(startDate, endDate);
-
         builder = provideTvShowCollectionRendererBuilder(this);
         draggableView = (DraggableView) findViewById(R.id.draggable_view);
         adapter = provideTvShowRendererAdapter(builder, deviceViewModelCollection);
@@ -167,6 +163,8 @@ public class DevicesActivity1 extends BaseActivity {
 
     private void initializeRecyclerView(RecyclerView recyclerView) {
         recyclerView.setAdapter(adapter);
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         animate(recyclerView);
         recyclerView.addOnItemTouchListener(
@@ -175,18 +173,12 @@ public class DevicesActivity1 extends BaseActivity {
                     public void onItemClick(View view, int position) {
                         DeviceViewModel tvShow = adapter.getItem(position);
                         tvShowSelected = tvShow;
-                        ParentLevel parentLevel = new ParentLevel(getApplicationContext(), tvShow);
-                        expandableListView.setAdapter(new ParentLevel(getApplicationContext(), tvShow));
-                        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-                            @Override
-                            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-
-                                return false;
-                            }
-                        });
+                        StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.lv_episodes);
+                        adapte1r = new MyAdapter(getApplicationContext(), tvShow);
+                        stickyList.setAdapter(adapte1r);
                         initChart();
-                        renderEpisodesHeader1(tvShow);
-                        // renderEpisodesHeader(tvShow);
+
+                        //  renderEpisodesHeader(tvShow);
                         // renderEpisodes(tvShow);
                         draggableView.setVisibility(View.VISIBLE);
                         draggableView.maximize();
@@ -275,7 +267,7 @@ public class DevicesActivity1 extends BaseActivity {
      * an adapter with the episodes information to be inserted in the ListView.
      *
      * @param tvShow to render
-     */
+    /*  *//*
     private void renderEpisodes(final DeviceViewModel tvShow) {
         List<Renderer<SensorViewModel>> episodeRenderers =
                 new LinkedList<Renderer<SensorViewModel>>();
@@ -287,15 +279,18 @@ public class DevicesActivity1 extends BaseActivity {
         episodesListView.setAdapter(episodesAdapter);
     }
 
+    */
+
     /**
      * Configure a view as episodes ListView header with the name of the tv show and the season.
-     */
+     *//*
     private void renderEpisodesHeader(DeviceViewModel tvShow) {
         try {
             episodesListView.removeHeaderView(headerView);
             //   header = (View) getLayoutInflater().inflate(R.layout.view_header, null);
             episodesListView.setAdapter(null);
-            episodesListView.addHeaderView(headerView);
+            episodesListView.addHeaderView(headerView,null,false);
+
 
             episodesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -315,19 +310,7 @@ public class DevicesActivity1 extends BaseActivity {
             e.printStackTrace();
         }
     }
-
-    private void renderEpisodesHeader1(DeviceViewModel tvShow) {
-        try {
-            expandableListView.removeHeaderView(headerView);
-            header = getLayoutInflater().inflate(R.layout.view_header, null);
-            expandableListView.addHeaderView(headerView);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+*/
 
     private void generateDefaultData() {
         int numValues = 50;

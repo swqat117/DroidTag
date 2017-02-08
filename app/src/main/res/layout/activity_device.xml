@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dip"
                 android:background="@color/colorPrimaryDark"
-                android:padding="2dip"></lecho.lib.hellocharts.view.PreviewLineChartView>
+                android:padding="2dip" />
 
             <View
                 android:id="@+id/line3"
@@ -54,15 +54,25 @@
                 android:layout_marginTop="1dip"
                 android:background="@android:color/darker_gray" />
 
-            <ExpandableListView
+            <LinearLayout
+                android:id="@+id/HeaderOfList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line3"
+                android:orientation="horizontal"
+
+
+                >
+
+            </LinearLayout>
+
+            <se.emilsjolander.stickylistheaders.StickyListHeadersListView
                 android:id="@+id/lv_episodes"
                 style="@style/episodes_list_view"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_below="@+id/chart_preview"
-                android:divider="@android:color/darker_gray"
-                android:dividerHeight="0.5dp"
-                android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/HeaderOfList" />
+
 
         </RelativeLayout>
 
