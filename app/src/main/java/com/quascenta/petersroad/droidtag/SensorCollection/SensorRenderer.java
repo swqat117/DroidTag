@@ -20,8 +20,7 @@ public class SensorRenderer extends Renderer<SensorViewModel> {
 
     @Bind(R.id.sensor_number)
     TextView sensorNumberTextView;
-    @Bind(R.id.sensor_month)
-    TextView sensorDateMonthTextView;
+
     @Bind(R.id.sensor_temp_value1)
     TextView sensorTempValue1;
     @Bind(R.id.sensor_rh_value1)
@@ -64,7 +63,7 @@ public class SensorRenderer extends Renderer<SensorViewModel> {
     public void render() {
         SensorViewModel sensorViewModel = getContent();
         sensorNumberTextView.setText(String.valueOf(sensorViewModel.getDateTime().getDayOfMonth()));
-        sensorDateMonthTextView.setText(String.valueOf(sensorViewModel.getMonth()));
+
         //// TODO: 1/31/2017 check if datetime is saving the value from device view model
         sensorRHvalue1.setText(String.format("%.2f", sensorViewModel.getTemp_sensor_Sensor(1)));
         sensorTempValue1.setText(String.format("%.2f", sensorViewModel.getTemp_sensor_Sensor(1)));

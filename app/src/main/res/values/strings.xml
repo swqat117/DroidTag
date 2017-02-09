@@ -3,4 +3,8 @@
     <string name="tv_shows_sample_activity_title">TV Shows</string>
     <string name="leftarrow"><![CDATA[<]]></string>
     <string name="rightarrow"><![CDATA[>]]></string>
+    <string name="settings">Settings</string>
+    <string name="modify_limits">Modify Limits</string>
+    <string name="change_theme">Change Theme</string>
+    <string name="export_as">Export As</string>
 </resources>

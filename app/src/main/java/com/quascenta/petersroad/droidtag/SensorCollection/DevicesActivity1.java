@@ -5,10 +5,14 @@ package com.quascenta.petersroad.droidtag.SensorCollection;
  */
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
@@ -22,6 +26,7 @@ import com.quascenta.petersroad.droidtag.R;
 import com.quascenta.petersroad.droidtag.RecyclerItemClickListener;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewCollection;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewModel;
+import com.quascenta.petersroad.droidtag.SensorCollection.model.SensorCollection;
 
 import org.joda.time.DateTime;
 
@@ -53,6 +58,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 public class DevicesActivity1 extends BaseActivity {
     public static final String TAG = "DevicesActivity";
     public static int DELAY_MILLIS = 10;
+    public boolean isWindowSelected = false;
     DeviceRenderer.OnItemClickListener x;
     RVRendererAdapter<DeviceViewModel> adapter;
     DeviceCollectionRendererBuilder builder;
@@ -78,6 +84,7 @@ public class DevicesActivity1 extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device);
         ButterKnife.bind(this);
+
         //TODO add manual dates from the app using a calender or a date picker ...
         startDate = new DateTime(2016, 6, 10, 5, 0, 0, 0);
         endDate = new DateTime(2016, 10, 10, 5, 0, 0, 0);
@@ -136,12 +143,14 @@ public class DevicesActivity1 extends BaseActivity {
 
     /**
      * Initialize recyclerview with some data and configure onItemClickListener.
+     * @param tvShow
      */
 
-    private void initChart() {
+
+    private void initChart(DeviceViewModel tvShow) {
         chart = (LineChartView) findViewById(R.id.cubiclinechart);
         previewChart = (PreviewLineChartView) findViewById(R.id.chart_preview);
-        generateDefaultData();
+        new ThisTakesAWhile().execute(tvShow.getSensorCollection());
         chart.setLineChartData(data);
         // Disable zoom/scroll for previewed chart, visible chart ranges depends on preview chart viewport so
         // zoom/scroll is unnecessary.
@@ -171,12 +180,13 @@ public class DevicesActivity1 extends BaseActivity {
                 new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        isWindowSelected = true;
                         DeviceViewModel tvShow = adapter.getItem(position);
                         tvShowSelected = tvShow;
                         StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.lv_episodes);
                         adapte1r = new MyAdapter(getApplicationContext(), tvShow);
                         stickyList.setAdapter(adapte1r);
-                        initChart();
+                        initChart(tvShow);
 
                         //  renderEpisodesHeader(tvShow);
                         // renderEpisodes(tvShow);
@@ -245,12 +255,35 @@ public class DevicesActivity1 extends BaseActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (!isWindowSelected) {
+            menu.clear();
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.main_menu, menu);
+
+        } else {
+            menu.clear();
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.draggable_menu, menu);
+
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     /**
      * Update action bar title with the default title value.
      */
     private void resetActionBarTitle() {
         tvShowSelected = null;
+        isWindowSelected = false;
         setTitle("DroidTag");
+
     }
 
     /**
@@ -258,6 +291,7 @@ public class DevicesActivity1 extends BaseActivity {
      */
     private void updateActionBarTitle() {
         if (tvShowSelected != null) {
+            isWindowSelected = true;
             setTitle(tvShowSelected.getTitle());
         }
     }
@@ -311,31 +345,81 @@ public class DevicesActivity1 extends BaseActivity {
         }
     }
 */
+    private Line generateLine(List<PointValue> values) {
+        return new Line(values).setHasPoints(false).setStrokeWidth(1).setColor(Color.WHITE).setFilled(true);
+    }
 
-    private void generateDefaultData() {
+    private Line generateLimits(List<PointValue> values) {
+        return new Line(values).setHasPoints(false).setStrokeWidth(2).setFilled(false).setColor(Color.GREEN);
+    }
+
+    private Line generatepreviewLimits(List<PointValue> values) {
+        return new Line(values).setHasPoints(false).setStrokeWidth(1).setFilled(false).setColor(Color.GREEN);
+    }
+
+
+    private void generateDefaultData(SensorCollection sensorCollection) {
         int numValues = 50;
 
         List<PointValue> values = new ArrayList<PointValue>();
-        for (int i = 0; i < numValues; ++i) {
-            values.add(new PointValue(i, (float) Math.random() * 100f));
+        List<PointValue> values1 = new ArrayList<PointValue>();
+        List<PointValue> values2 = new ArrayList<PointValue>();
+        List<PointValue> values3 = new ArrayList<PointValue>();
+        List<PointValue> values4 = new ArrayList<PointValue>();
+        List<PointValue> values5 = new ArrayList<PointValue>();
+
+
+        for (int i = 0; i < sensorCollection.size(); ++i) {
+            values.add(new PointValue(i, sensorCollection.get(i).getTemp_sensor_Sensor(0)));
+            values1.add(new PointValue(i, sensorCollection.get(i).getTemp_sensor_Sensor(1)));
+            values2.add(new PointValue(i, 25.0f));
+            values3.add(new PointValue(i, 50.0f));
+            values4.add(new PointValue(i, 0.0f));
+            values5.add(new PointValue(i, 60.0f));
         }
 
-        Line line = new Line(values);
-        line.setColor(ChartUtils.COLOR_GREEN);
-        line.setHasPoints(false);// too many values so don't draw points.
-
+        Line line = generateLine(values);
+        Line line1 = generateLine(values1);
+        Line line2 = generateLimits(values2);
+        Line line3 = generateLimits(values3);
+        Line line4 = generateLineDefault(values4);
+        Line line5 = generateLineDefault(values5);
+        Line line6 = generatepreviewLimits(values2);
+        Line line7 = generatepreviewLimits(values3);
         List<Line> lines = new ArrayList<Line>();
         lines.add(line);
-        previewdata = new LineChartData(lines);
+        lines.add(line1);
+        lines.add(line2);
+        lines.add(line3);
+        lines.add(line4);
+        lines.add(line5);
+
+        List<Line> lines1 = new ArrayList<Line>();
+        lines1.add(line);
+        lines1.add(line1);
+        lines1.add(line6);
+        lines1.add(line7);
+        lines1.add(line4);
+        lines1.add(line5);
+
         data = new LineChartData(lines);
-        data.setAxisXBottom(new Axis());
-        data.setAxisYLeft(new Axis().setHasLines(false));
+
+        previewdata = new LineChartData(lines1);
+
+
+
 
         // prepare preview data, is better to use separate deep copy for preview chart.
         // Set color to grey to make preview area more visible.
         //data = new LineChartData(data);
+        data.setAxisYLeft(new Axis().setHasLines(false));
+        data.setAxisXBottom(new Axis().setHasLines(false));
         previewdata.getLines().get(0).setColor(ChartUtils.DEFAULT_DARKEN_COLOR);
 
+    }
+
+    private Line generateLineDefault(List<PointValue> values) {
+        return new Line(values).setHasPoints(false).setStrokeWidth(1).setColor(Color.TRANSPARENT);
     }
 
     private void previewY() {
@@ -368,5 +452,39 @@ public class DevicesActivity1 extends BaseActivity {
         previewChart.setCurrentViewportWithAnimation(tempViewport);
     }
 
+
+    class ThisTakesAWhile extends AsyncTask<SensorCollection, Integer, Integer> {
+        int numcycles;  //total number of times to execute process
+
+        protected void onPreExecute() {
+            //Executes in UI thread before task begins
+            //Can be used to set things up in UI such as showing progress bar
+
+        }
+
+        protected Integer doInBackground(SensorCollection... arg0) {
+            //Runs in a background thread
+            //Used to run code that could block the UI
+            generateDefaultData(arg0[0]);
+            return null;
+        }
+
+        protected void onProgressUpdate(Integer... arg1) {
+            //called when background task calls publishProgress
+            //in doInBackground
+
+        }
+
+        protected void onPostExecute() {
+            //result comes from return value of doInBackground
+            //runs on UI thread, not called if task cancelled
+
+        }
+
+        protected void onCancelled() {
+            //run on UI thread if task is cancelled
+
+        }
+    }
 
 }

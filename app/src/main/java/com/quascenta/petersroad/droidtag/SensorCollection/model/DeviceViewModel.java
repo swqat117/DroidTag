@@ -216,6 +216,7 @@ public class DeviceViewModel {
         }
     }
 
+
     public String getMonth(int x) {
 
         switch (x) {
