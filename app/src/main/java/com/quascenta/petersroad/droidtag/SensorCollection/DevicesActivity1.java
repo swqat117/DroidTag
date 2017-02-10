@@ -6,13 +6,13 @@ package com.quascenta.petersroad.droidtag.SensorCollection;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
@@ -21,13 +21,17 @@ import com.github.pedrovgs.DraggableView;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.Renderer;
 import com.quascenta.petersroad.droidtag.BaseActivity;
+import com.quascenta.petersroad.droidtag.EventBus.Events;
+import com.quascenta.petersroad.droidtag.EventBus.GlobalBus;
 import com.quascenta.petersroad.droidtag.HeaderView;
 import com.quascenta.petersroad.droidtag.R;
 import com.quascenta.petersroad.droidtag.RecyclerItemClickListener;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewCollection;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewModel;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.SensorCollection;
+import com.quascenta.petersroad.droidtag.widgets.BottomSheetFragment;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -65,6 +69,8 @@ public class DevicesActivity1 extends BaseActivity {
     DeviceViewCollection deviceViewModelCollection;
     @Bind(R.id.rv_devices)
     RecyclerView recyclerView;
+    BottomSheetFragment bottomSheetDialogFragment = new BottomSheetFragment();
+
     LineChartView chart;
     PreviewLineChartView previewChart;
     LineChartData data, previewdata;
@@ -72,6 +78,7 @@ public class DevicesActivity1 extends BaseActivity {
     DraggableView draggableView;
     HeaderView headerView;
     View header;
+    float lowerlimit = 25.0f, upperlimit = 55.0f;
     private DateTime startDate;
     private DateTime endDate;
     private DeviceViewModel tvShowSelected;
@@ -97,6 +104,31 @@ public class DevicesActivity1 extends BaseActivity {
         initializeDraggableView();
         initializeRecyclerView(recyclerView);
         hookListeners();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GlobalBus.getBus().getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        GlobalBus.getBus().getDefault().unregister(this);
+        super.onStop();
+    }
+
+    public void sendMessageToFragment() {
+        Events.ActivityFragmentMessage activityFragmentMessageEvent =
+                new Events.ActivityFragmentMessage(lowerlimit, upperlimit);
+        GlobalBus.getBus().post(activityFragmentMessageEvent);
+    }
+
+
+    @Subscribe
+    public void getMessage(Events.FragmentActivityMessage fragmentActivityMessage) {
+        generateDefaultData(tvShowSelected.getSensorCollection(), fragmentActivityMessage.getLow_limit(), fragmentActivityMessage.getHigh_limit());
+        LoadChart();
     }
 
     /**
@@ -150,14 +182,18 @@ public class DevicesActivity1 extends BaseActivity {
     private void initChart(DeviceViewModel tvShow) {
         chart = (LineChartView) findViewById(R.id.cubiclinechart);
         previewChart = (PreviewLineChartView) findViewById(R.id.chart_preview);
-        new ThisTakesAWhile().execute(tvShow.getSensorCollection());
+        generateDefaultData(tvShow.getSensorCollection(), lowerlimit, upperlimit);
+        LoadChart();
+
+    }
+
+    private void LoadChart() {
         chart.setLineChartData(data);
         // Disable zoom/scroll for previewed chart, visible chart ranges depends on preview chart viewport so
         // zoom/scroll is unnecessary.
         chart.setZoomEnabled(false);
         chart.setScrollEnabled(false);
         previewChart.setLineChartData(previewdata);
-
         previewChart.setViewportChangeListener(new ViewportChangeListener() {
             @Override
             public void onViewportChanged(Viewport viewport) {
@@ -172,8 +208,6 @@ public class DevicesActivity1 extends BaseActivity {
 
     private void initializeRecyclerView(RecyclerView recyclerView) {
         recyclerView.setAdapter(adapter);
-
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         animate(recyclerView);
         recyclerView.addOnItemTouchListener(
@@ -187,7 +221,6 @@ public class DevicesActivity1 extends BaseActivity {
                         adapte1r = new MyAdapter(getApplicationContext(), tvShow);
                         stickyList.setAdapter(adapte1r);
                         initChart(tvShow);
-
                         //  renderEpisodesHeader(tvShow);
                         // renderEpisodes(tvShow);
                         draggableView.setVisibility(View.VISIBLE);
@@ -253,6 +286,32 @@ public class DevicesActivity1 extends BaseActivity {
                 resetActionBarTitle();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int x = item.getItemId();
+        if (!isWindowSelected) {
+            switch (x) {
+                case R.id.Settings:
+                    //Load Settings page
+                case R.id.change_theme:
+                    //Load theme
+
+            }
+        } else {
+            switch (x) {
+                case R.id.change_limits:
+                    //Load Context Menu
+                    BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
+                    bottomSheetFragment.getLimits(lowerlimit, upperlimit);
+                    bottomSheetFragment.show(getSupportFragmentManager(), "pass");
+
+                case R.id.Share:
+                    new BottomSheetFragment().show(getSupportFragmentManager(), "pass");
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -358,24 +417,24 @@ public class DevicesActivity1 extends BaseActivity {
     }
 
 
-    private void generateDefaultData(SensorCollection sensorCollection) {
-        int numValues = 50;
+    private void generateDefaultData(SensorCollection sensorCollection, float lowerlimit, float upperlimit) {
 
-        List<PointValue> values = new ArrayList<PointValue>();
-        List<PointValue> values1 = new ArrayList<PointValue>();
-        List<PointValue> values2 = new ArrayList<PointValue>();
-        List<PointValue> values3 = new ArrayList<PointValue>();
-        List<PointValue> values4 = new ArrayList<PointValue>();
-        List<PointValue> values5 = new ArrayList<PointValue>();
+
+        List<PointValue> values = new ArrayList<>();
+        List<PointValue> values1 = new ArrayList<>();
+        List<PointValue> values2 = new ArrayList<>();
+        List<PointValue> values3 = new ArrayList<>();
+        List<PointValue> values4 = new ArrayList<>();
+        List<PointValue> values5 = new ArrayList<>();
 
 
         for (int i = 0; i < sensorCollection.size(); ++i) {
             values.add(new PointValue(i, sensorCollection.get(i).getTemp_sensor_Sensor(0)));
             values1.add(new PointValue(i, sensorCollection.get(i).getTemp_sensor_Sensor(1)));
-            values2.add(new PointValue(i, 25.0f));
-            values3.add(new PointValue(i, 50.0f));
+            values2.add(new PointValue(i, lowerlimit));
+            values3.add(new PointValue(i, upperlimit));
             values4.add(new PointValue(i, 0.0f));
-            values5.add(new PointValue(i, 60.0f));
+            values5.add(new PointValue(i, upperlimit + 20.0f));
         }
 
         Line line = generateLine(values);
@@ -386,7 +445,7 @@ public class DevicesActivity1 extends BaseActivity {
         Line line5 = generateLineDefault(values5);
         Line line6 = generatepreviewLimits(values2);
         Line line7 = generatepreviewLimits(values3);
-        List<Line> lines = new ArrayList<Line>();
+        List<Line> lines = new ArrayList<>();
         lines.add(line);
         lines.add(line1);
         lines.add(line2);
@@ -394,7 +453,7 @@ public class DevicesActivity1 extends BaseActivity {
         lines.add(line4);
         lines.add(line5);
 
-        List<Line> lines1 = new ArrayList<Line>();
+        List<Line> lines1 = new ArrayList<>();
         lines1.add(line);
         lines1.add(line1);
         lines1.add(line6);
@@ -452,39 +511,5 @@ public class DevicesActivity1 extends BaseActivity {
         previewChart.setCurrentViewportWithAnimation(tempViewport);
     }
 
-
-    class ThisTakesAWhile extends AsyncTask<SensorCollection, Integer, Integer> {
-        int numcycles;  //total number of times to execute process
-
-        protected void onPreExecute() {
-            //Executes in UI thread before task begins
-            //Can be used to set things up in UI such as showing progress bar
-
-        }
-
-        protected Integer doInBackground(SensorCollection... arg0) {
-            //Runs in a background thread
-            //Used to run code that could block the UI
-            generateDefaultData(arg0[0]);
-            return null;
-        }
-
-        protected void onProgressUpdate(Integer... arg1) {
-            //called when background task calls publishProgress
-            //in doInBackground
-
-        }
-
-        protected void onPostExecute() {
-            //result comes from return value of doInBackground
-            //runs on UI thread, not called if task cancelled
-
-        }
-
-        protected void onCancelled() {
-            //run on UI thread if task is cancelled
-
-        }
-    }
 
 }

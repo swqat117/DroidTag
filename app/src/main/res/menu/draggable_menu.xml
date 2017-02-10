@@ -8,8 +8,9 @@
         android:title="@string/modify_limits"
         app:showAsAction="never" />
     <item
-        android:id="@+id/Export"
-        android:title="@string/export_as"
-        app:showAsAction="never" />
+        android:id="@+id/Share"
+        android:icon="@drawable/ic_share_black_24dp"
+        android:title="@string/share"
+        app:showAsAction="ifRoom" />
 
 </menu>

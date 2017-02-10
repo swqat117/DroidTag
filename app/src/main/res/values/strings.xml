@@ -7,4 +7,6 @@
     <string name="modify_limits">Modify Limits</string>
     <string name="change_theme">Change Theme</string>
     <string name="export_as">Export As</string>
+    <string name="sheet_m1">sheet1</string>
+    <string name="share">share</string>
 </resources>
