@@ -103,7 +103,7 @@ public class MyAdapter extends BaseAdapter implements StickyListHeadersAdapter {
     public long getHeaderId(int position) {
         //return the first character of the country as ID because this is what headers are based upon
 
-        return MonthCollection.get(position).getMonth().subSequence(0, 1).charAt(0);
+        return MonthCollection.get(position).getMonth().subSequence(0, 3).charAt(2);
     }
 
     class HeaderViewHolder {

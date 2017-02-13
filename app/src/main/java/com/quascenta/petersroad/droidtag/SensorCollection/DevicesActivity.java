@@ -170,7 +170,6 @@ public class DevicesActivity extends BaseActivity {
                     public void onItemClick(View view, int position) {
                         DeviceViewModel tvShow = adapter.getItem(position);
                         tvShowSelected = tvShow;
-
                         initChart();
 
                         renderEpisodesHeader(tvShow);

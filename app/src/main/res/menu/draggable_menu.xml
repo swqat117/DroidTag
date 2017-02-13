@@ -11,6 +11,6 @@
         android:id="@+id/Share"
         android:icon="@drawable/ic_share_black_24dp"
         android:title="@string/share"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
 </menu>

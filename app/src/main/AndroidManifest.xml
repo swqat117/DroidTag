@@ -15,24 +15,22 @@
 
 
         <activity
-            android:name=".TvShowsActivity"
-            android:label="@string/tv_shows_sample_activity_title">
-
-
-    </activity>
-        <activity
             android:name=".SensorCollection.DevicesActivity"
-            android:label="Droidvice">
-
-        </activity>
+            android:label="Droidvice"></activity>
         <activity
-            android:name=".SensorCollection.DevicesActivity1"
+            android:name=".DevicesActivity2"
+
             android:label="Droidvice">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".SensorCollection.DevicesActivity1"
+            android:label="Droidvice">
+
         </activity>
 
     </application>

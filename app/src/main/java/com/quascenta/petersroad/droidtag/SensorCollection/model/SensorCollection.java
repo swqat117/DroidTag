@@ -1,7 +1,6 @@
 package com.quascenta.petersroad.droidtag.SensorCollection.model;
 
 import com.pedrogomez.renderers.AdapteeCollection;
-import com.quascenta.petersroad.droidtag.viewmodel.EpisodeViewModel;
 
 import java.util.Collection;
 import java.util.LinkedList;

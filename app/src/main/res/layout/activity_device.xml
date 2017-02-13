@@ -12,7 +12,8 @@
         android:id="@+id/rv_devices"
         style="@style/tv_show_grid_view"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        android:layout_marginTop="50dp" />
 
     <!-- Draggable View -->
 
@@ -24,7 +25,6 @@
         android:background="@color/black"
         draggable_view:bottom_view_id="@+id/x"
         draggable_view:enable_click_to_maximize_view="true"
-        draggable_view:enable_click_to_minimize_view="true"
         draggable_view:top_view_id="@+id/chart_frame"
         draggable_view:top_view_margin_bottom="@dimen/top_fragment_margin"
         draggable_view:top_view_margin_right="@dimen/top_fragment_margin"

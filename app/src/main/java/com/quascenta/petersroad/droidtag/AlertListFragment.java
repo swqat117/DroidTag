@@ -1,36 +1,33 @@
-package com.quascenta.petersroad.droidtag.SensorCollection;
-
-/**
- * Created by AKSHAY on 2/8/2017.
- */
+package com.quascenta.petersroad.droidtag;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 
 import com.github.pedrovgs.DraggableListener;
 import com.github.pedrovgs.DraggableView;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.Renderer;
-import com.quascenta.petersroad.droidtag.BaseActivity;
-import com.quascenta.petersroad.droidtag.EventBus.Events;
-import com.quascenta.petersroad.droidtag.HeaderView;
-import com.quascenta.petersroad.droidtag.R;
-import com.quascenta.petersroad.droidtag.RecyclerItemClickListener;
+import com.quascenta.petersroad.droidtag.SensorCollection.DeviceCollectionRendererBuilder;
+import com.quascenta.petersroad.droidtag.SensorCollection.DeviceRenderer;
+import com.quascenta.petersroad.droidtag.SensorCollection.MyAdapter;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewCollection;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewModel;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.SensorCollection;
 import com.quascenta.petersroad.droidtag.widgets.BottomSheetFragment;
 
-import org.greenrobot.eventbus.Subscribe;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -53,12 +50,11 @@ import lecho.lib.hellocharts.view.LineChartView;
 import lecho.lib.hellocharts.view.PreviewLineChartView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-
 /**
- * Created by AKSHAY on 1/31/2017.
+ * Created by AKSHAY on 2/13/2017.
  */
+public class AlertListFragment extends Fragment {
 
-public class DevicesActivity1 extends BaseActivity {
     public static final String TAG = "DevicesActivity";
     public static int DELAY_MILLIS = 10;
     public boolean isWindowSelected = false;
@@ -75,70 +71,96 @@ public class DevicesActivity1 extends BaseActivity {
     LineChartData data, previewdata;
     MyAdapter adapte1r;
     DraggableView draggableView;
-    HeaderView headerView;
     View header;
     float lowerlimit = 25.0f, upperlimit = 55.0f;
+    StickyListHeadersListView stickyList;
     private DateTime startDate;
     private DateTime endDate;
     private DeviceViewModel tvShowSelected;
 
-    /**
-     * Initialize the Activity with some injected data.
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device);
-        ButterKnife.bind(this);
+    public AlertListFragment() {
+        super();
+    }
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View ConvertView = inflater.inflate(R.layout.activity_device, container, false);
+        ButterKnife.bind(this, ConvertView);
+        init(ConvertView);
         //TODO add manual dates from the app using a calender or a date picker ...
+        return ConvertView;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int x = item.getItemId();
+        if (!isWindowSelected) {
+            switch (x) {
+                case R.id.Settings:
+                    //Load Settings page
+                case R.id.change_theme:
+                    //Load theme
+
+            }
+        } else {
+            switch (x) {
+                case R.id.change_limits:
+                    //Load Context Menu
+                    new BottomSheetFragment().show(getActivity().getSupportFragmentManager(), "pass");
+
+                case R.id.Share:
+
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        if (!isWindowSelected) {
+            menu.clear();
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.main_menu, menu);
+
+        } else {
+            menu.clear();
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.draggable_menu, menu);
+
+        }
+
+    }
+
+    void init(View ConvertView) {
+
+        chart = (LineChartView) ConvertView.findViewById(R.id.cubiclinechart);
+        previewChart = (PreviewLineChartView) ConvertView.findViewById(R.id.chart_preview);
         startDate = new DateTime(2016, 6, 10, 5, 0, 0, 0);
         endDate = new DateTime(2016, 10, 10, 5, 0, 0, 0);
-        headerView = new HeaderView(this);
         deviceViewModelCollection = new DeviceViewCollection(startDate, endDate);
-        builder = provideTvShowCollectionRendererBuilder(this);
-        draggableView = (DraggableView) findViewById(R.id.draggable_view);
+        builder = provideTvShowCollectionRendererBuilder(getActivity());
+        draggableView = (DraggableView) ConvertView.findViewById(R.id.draggable_view);
         adapter = provideTvShowRendererAdapter(builder, deviceViewModelCollection);
-
+        stickyList = (StickyListHeadersListView) ConvertView.findViewById(R.id.lv_episodes);
         initializeDraggableView();
-        initializeRecyclerView(recyclerView);
-        hookListeners();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    public void onStop() {
-
-        super.onStop();
-    }
-
-    public void sendMessageToFragment() {
-        Events.ActivityFragmentMessage activityFragmentMessageEvent =
-                new Events.ActivityFragmentMessage(lowerlimit, upperlimit);
-
+        initializeRecyclerView(recyclerView, ConvertView);
     }
 
 
-    @Subscribe
-    public void getMessage(Events.FragmentActivityMessage fragmentActivityMessage) {
-        generateDefaultData(tvShowSelected.getSensorCollection(), fragmentActivityMessage.getLow_limit(), fragmentActivityMessage.getHigh_limit());
-        LoadChart();
-    }
-
-    /**
-     * Method triggered when the iv_fan_art widget is clicked. This method shows a toast with the tv
-     * show selected.
-     */
-
-
-    /**
-     * Initialize DraggableView.
-     */
     private void initializeDraggableView() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -150,99 +172,13 @@ public class DevicesActivity1 extends BaseActivity {
         }, DELAY_MILLIS);
     }
 
-    /**
-     * Initialize GridView with some injected data and configure OnItemClickListener.
-     */
-   /* private void initializeGridView() {
-        tvShowsGridView.setAdapter(adapter);
-        tvShowsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override public void onItemClick(AdapterView<?> adapterView, View view, int position,
-                                              long id) {
-                TvShowViewModel tvShow = adapter.getItem(position);
-                tvShowSelected = tvShow;
-                Picasso.with(getBaseContext())
-                        .load(tvShow.getFanArt())
-                        .placeholder(R.drawable.tv_show_placeholder)
-                        .into(fanArtImageView);
-                renderEpisodesHeader(tvShow);
-                renderEpisodes(tvShow);
-                draggableView.setVisibility(View.VISIBLE);
-                draggableView.maximize();
-            }
-        });
-    }*/
-
-    /**
-     * Initialize recyclerview with some data and configure onItemClickListener.
-     * @param tvShow
-     */
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
 
-    private void initChart(DeviceViewModel tvShow) {
-        chart = (LineChartView) findViewById(R.id.cubiclinechart);
-        previewChart = (PreviewLineChartView) findViewById(R.id.chart_preview);
-        generateDefaultData(tvShow.getSensorCollection(), lowerlimit, upperlimit);
-        LoadChart();
-
+        hookListeners();
     }
-
-    private void LoadChart() {
-        chart.setLineChartData(data);
-        // Disable zoom/scroll for previewed chart, visible chart ranges depends on preview chart viewport so
-        // zoom/scroll is unnecessary.
-        chart.setZoomEnabled(false);
-        chart.setScrollEnabled(false);
-        previewChart.setLineChartData(previewdata);
-        previewChart.setViewportChangeListener(new ViewportChangeListener() {
-            @Override
-            public void onViewportChanged(Viewport viewport) {
-                chart.setCurrentViewport(viewport);
-            }
-        });
-
-        previewX(false);
-
-    }
-
-
-    private void initializeRecyclerView(RecyclerView recyclerView) {
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        animate(recyclerView);
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        isWindowSelected = true;
-                        DeviceViewModel tvShow = adapter.getItem(position);
-                        tvShowSelected = tvShow;
-                        StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.lv_episodes);
-                        adapte1r = new MyAdapter(getApplicationContext(), tvShow);
-                        stickyList.setAdapter(adapte1r);
-                        initChart(tvShow);
-                        //  renderEpisodesHeader(tvShow);
-                        // renderEpisodes(tvShow);
-                        draggableView.setVisibility(View.VISIBLE);
-                        draggableView.maximize();
-                    }
-                }));
-
-
-    }
-
-    void animate(RecyclerView recyclerView) {
-        SlideInLeftAnimationAdapter slideInLeftAnimationAdapter = new SlideInLeftAnimationAdapter(adapter);
-        slideInLeftAnimationAdapter.setDuration(1343);
-        slideInLeftAnimationAdapter.setFirstOnly(false);
-        recyclerView.setItemAnimator(new SlideInLeftAnimator());
-        recyclerView.setAdapter(slideInLeftAnimationAdapter);
-        slideInLeftAnimationAdapter.setInterpolator(new OvershootInterpolator());
-        recyclerView.getItemAnimator().setAddDuration(1000);
-        recyclerView.getItemAnimator().setRemoveDuration(1000);
-        recyclerView.getItemAnimator().setMoveDuration(1000);
-        recyclerView.getItemAnimator().setChangeDuration(1000);
-    }
-
 
     protected DeviceCollectionRendererBuilder provideTvShowCollectionRendererBuilder(
             Context context) {
@@ -287,63 +223,35 @@ public class DevicesActivity1 extends BaseActivity {
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int x = item.getItemId();
-        if (!isWindowSelected) {
-            switch (x) {
-                case R.id.Settings:
-                    //Load Settings page
-                case R.id.change_theme:
-                    //Load theme
+    private void initChart(DeviceViewModel tvShow, View view) {
+        generateDefaultData(tvShow.getSensorCollection(), lowerlimit, upperlimit);
+        LoadChart();
 
+    }
+
+    private void LoadChart() {
+        chart.setLineChartData(data);
+        // Disable zoom/scroll for previewed chart, visible chart ranges depends on preview chart viewport so
+        // zoom/scroll is unnecessary.
+        chart.setZoomEnabled(false);
+        chart.setScrollEnabled(false);
+        previewChart.setLineChartData(previewdata);
+        previewChart.setViewportChangeListener(new ViewportChangeListener() {
+            @Override
+            public void onViewportChanged(Viewport viewport) {
+                chart.setCurrentViewport(viewport);
             }
-        } else {
-            switch (x) {
-                case R.id.change_limits:
-                    //Load Context Menu
-                    Bundle args = new Bundle();
-                    args.putFloat("LOWERLIMIT", lowerlimit);
-                    args.putFloat("UPPERLIMIT", upperlimit);
-                    BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
-                    bottomSheetFragment.setArguments(args);
-                    bottomSheetFragment.show(getSupportFragmentManager(), "pass");
+        });
 
-                case R.id.Share:
-                    new BottomSheetFragment().show(getSupportFragmentManager(), "pass");
-            }
-        }
-        return super.onOptionsItemSelected(item);
+        previewX(false);
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        if (!isWindowSelected) {
-            menu.clear();
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.main_menu, menu);
-
-        } else {
-            menu.clear();
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.draggable_menu, menu);
-
-        }
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    /**
-     * Update action bar title with the default title value.
-     */
     private void resetActionBarTitle() {
         tvShowSelected = null;
         isWindowSelected = false;
-        setTitle("DroidTag");
+        getActivity().setTitle("DroidTag");
 
     }
 
@@ -353,10 +261,47 @@ public class DevicesActivity1 extends BaseActivity {
     private void updateActionBarTitle() {
         if (tvShowSelected != null) {
             isWindowSelected = true;
-            setTitle(tvShowSelected.getTitle());
+            getActivity().setTitle(tvShowSelected.getTitle());
         }
     }
 
+    private void initializeRecyclerView(RecyclerView recyclerView, View view) {
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        animate(recyclerView);
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        isWindowSelected = true;
+                        DeviceViewModel tvShow = adapter.getItem(position);
+                        tvShowSelected = tvShow;
+
+                        adapte1r = new MyAdapter(getActivity().getApplicationContext(), tvShow);
+                        stickyList.setAdapter(adapte1r);
+                        initChart(tvShow, view);
+                        //  renderEpisodesHeader(tvShow);
+                        // renderEpisodes(tvShow);
+                        draggableView.setVisibility(View.VISIBLE);
+                        draggableView.maximize();
+                    }
+                }));
+
+
+    }
+
+    void animate(RecyclerView recyclerView) {
+        SlideInLeftAnimationAdapter slideInLeftAnimationAdapter = new SlideInLeftAnimationAdapter(adapter);
+        slideInLeftAnimationAdapter.setDuration(1343);
+        slideInLeftAnimationAdapter.setFirstOnly(false);
+        recyclerView.setItemAnimator(new SlideInLeftAnimator());
+        recyclerView.setAdapter(slideInLeftAnimationAdapter);
+        slideInLeftAnimationAdapter.setInterpolator(new OvershootInterpolator());
+        recyclerView.getItemAnimator().setAddDuration(1000);
+        recyclerView.getItemAnimator().setRemoveDuration(1000);
+        recyclerView.getItemAnimator().setMoveDuration(1000);
+        recyclerView.getItemAnimator().setChangeDuration(1000);
+    }
     /**
      * Render a list of episodes using a tv show view model with the information. This method create
      * an adapter with the episodes information to be inserted in the ListView.
@@ -466,8 +411,6 @@ public class DevicesActivity1 extends BaseActivity {
         data = new LineChartData(lines);
 
         previewdata = new LineChartData(lines1);
-
-
 
 
         // prepare preview data, is better to use separate deep copy for preview chart.
