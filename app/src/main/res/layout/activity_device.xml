@@ -87,7 +87,7 @@
                 android:layout_height="200dip"
                 android:background="@color/colorPrimary"
 
-                android:padding="1dip" />
+                android:padding="-4dip" />
         </FrameLayout>
 
         <View

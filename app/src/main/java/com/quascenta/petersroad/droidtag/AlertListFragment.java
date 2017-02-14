@@ -15,11 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Toast;
 
 import com.github.pedrovgs.DraggableListener;
 import com.github.pedrovgs.DraggableView;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.Renderer;
+import com.quascenta.petersroad.droidtag.EventBus.Events;
 import com.quascenta.petersroad.droidtag.SensorCollection.DeviceCollectionRendererBuilder;
 import com.quascenta.petersroad.droidtag.SensorCollection.DeviceRenderer;
 import com.quascenta.petersroad.droidtag.SensorCollection.MyAdapter;
@@ -28,6 +30,9 @@ import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewModel;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.SensorCollection;
 import com.quascenta.petersroad.droidtag.widgets.BottomSheetFragment;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -39,8 +44,10 @@ import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.adapters.SlideInLeftAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 import lecho.lib.hellocharts.gesture.ZoomType;
+import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
 import lecho.lib.hellocharts.listener.ViewportChangeListener;
 import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
@@ -58,6 +65,7 @@ public class AlertListFragment extends Fragment {
     public static final String TAG = "DevicesActivity";
     public static int DELAY_MILLIS = 10;
     public boolean isWindowSelected = false;
+    public SensorCollection sensorCollection = new SensorCollection();
     DeviceRenderer.OnItemClickListener x;
     RVRendererAdapter<DeviceViewModel> adapter;
     DeviceCollectionRendererBuilder builder;
@@ -123,6 +131,18 @@ public class AlertListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onStop() {
+
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -144,6 +164,7 @@ public class AlertListFragment extends Fragment {
         }
 
     }
+
 
     void init(View ConvertView) {
 
@@ -235,15 +256,18 @@ public class AlertListFragment extends Fragment {
         // zoom/scroll is unnecessary.
         chart.setZoomEnabled(false);
         chart.setScrollEnabled(false);
+        chart.setOnValueTouchListener(new ValueTouchListener());
         previewChart.setLineChartData(previewdata);
         previewChart.setViewportChangeListener(new ViewportChangeListener() {
             @Override
             public void onViewportChanged(Viewport viewport) {
+
+
                 chart.setCurrentViewport(viewport);
             }
         });
 
-        previewX(false);
+        previewX(true);
 
     }
 
@@ -276,7 +300,7 @@ public class AlertListFragment extends Fragment {
                         isWindowSelected = true;
                         DeviceViewModel tvShow = adapter.getItem(position);
                         tvShowSelected = tvShow;
-
+                        sensorCollection = tvShow.getSensorCollection();
                         adapte1r = new MyAdapter(getActivity().getApplicationContext(), tvShow);
                         stickyList.setAdapter(adapte1r);
                         initChart(tvShow, view);
@@ -352,15 +376,19 @@ public class AlertListFragment extends Fragment {
     }
 */
     private Line generateLine(List<PointValue> values) {
-        return new Line(values).setHasPoints(false).setStrokeWidth(1).setColor(Color.WHITE).setFilled(true);
+        return new Line(values).setHasPoints(false).setStrokeWidth(1).setColor(Color.CYAN).setFilled(false).setHasPoints(true).setPointColor(Color.CYAN).setHasLabels(true).setPointRadius(0);
+    }
+
+    private Line generatePreviewLine(List<PointValue> values) {
+        return new Line(values).setHasPoints(false).setStrokeWidth(1).setColor(Color.CYAN).setFilled(false).setHasPoints(false).setPointColor(Color.CYAN).setHasLabelsOnlyForSelected(false);
     }
 
     private Line generateLimits(List<PointValue> values) {
-        return new Line(values).setHasPoints(false).setStrokeWidth(2).setFilled(false).setColor(Color.GREEN);
+        return new Line(values).setHasPoints(false).setStrokeWidth(2).setFilled(false).setColor(Color.RED).setHasLabelsOnlyForSelected(true).setHasPoints(true).setPointRadius(2);
     }
 
     private Line generatepreviewLimits(List<PointValue> values) {
-        return new Line(values).setHasPoints(false).setStrokeWidth(1).setFilled(false).setColor(Color.GREEN);
+        return new Line(values).setHasPoints(false).setStrokeWidth(1).setFilled(false).setColor(Color.RED).setHasLabelsOnlyForSelected(true);
     }
 
 
@@ -368,24 +396,27 @@ public class AlertListFragment extends Fragment {
 
 
         List<PointValue> values = new ArrayList<>();
-        List<PointValue> values1 = new ArrayList<>();
+        //   List<PointValue> values1 = new ArrayList<>();
         List<PointValue> values2 = new ArrayList<>();
         List<PointValue> values3 = new ArrayList<>();
         List<PointValue> values4 = new ArrayList<>();
         List<PointValue> values5 = new ArrayList<>();
-
+        List<AxisValue> values6 = new ArrayList<>();
 
         for (int i = 0; i < sensorCollection.size(); ++i) {
-            values.add(new PointValue(i, sensorCollection.get(i).getTemp_sensor_Sensor(0)));
-            values1.add(new PointValue(i, sensorCollection.get(i).getTemp_sensor_Sensor(1)));
-            values2.add(new PointValue(i, lowerlimit));
-            values3.add(new PointValue(i, upperlimit));
+            values.add(new PointValue(i, sensorCollection.get(i).getTemp_sensor_Sensor(0)).setLabel(String.format("%.1f", sensorCollection.get(i).getTemp_sensor_Sensor(0)) + " C"));
+            // values1.add(new PointValue(i, sensorCollection.get(i).getTemp_sensor_Sensor(1)).setLabel(String.format("%.1f",sensorCollection.get(i).getTemp_sensor_Sensor(1))+" C"));
+            values2.add(new PointValue(i, lowerlimit).setLabel("Limit(Start) = " + String.valueOf(lowerlimit) + "C"));
+            values3.add(new PointValue(i, upperlimit).setLabel("Limit(End) = " + String.valueOf(upperlimit) + "C"));
             values4.add(new PointValue(i, 0.0f));
             values5.add(new PointValue(i, upperlimit + 20.0f));
+            values6.add(new AxisValue(i).setLabel(String.valueOf(sensorCollection.get(i).getMonth()) + " " + String.valueOf(sensorCollection.get(i).getDateTime().dayOfMonth().get())));
         }
 
         Line line = generateLine(values);
-        Line line1 = generateLine(values1);
+        Line linex = generatePreviewLine(values);
+        // Line line1 = generateLine(values1);
+        // Line linex1 = generatePreviewLine(values1);
         Line line2 = generateLimits(values2);
         Line line3 = generateLimits(values3);
         Line line4 = generateLineDefault(values4);
@@ -394,30 +425,32 @@ public class AlertListFragment extends Fragment {
         Line line7 = generatepreviewLimits(values3);
         List<Line> lines = new ArrayList<>();
         lines.add(line);
-        lines.add(line1);
+        // lines.add(line1);
         lines.add(line2);
         lines.add(line3);
         lines.add(line4);
         lines.add(line5);
 
         List<Line> lines1 = new ArrayList<>();
-        lines1.add(line);
-        lines1.add(line1);
+        lines1.add(linex);
+        //   lines1.add(linex1);
         lines1.add(line6);
         lines1.add(line7);
         lines1.add(line4);
         lines1.add(line5);
 
         data = new LineChartData(lines);
-
+        data.setValueLabelTextSize(10);
+        data.setValueLabelBackgroundEnabled(false);
         previewdata = new LineChartData(lines1);
+
 
 
         // prepare preview data, is better to use separate deep copy for preview chart.
         // Set color to grey to make preview area more visible.
         //data = new LineChartData(data);
         data.setAxisYLeft(new Axis().setHasLines(false));
-        data.setAxisXBottom(new Axis().setHasLines(false));
+        data.setAxisXBottom(new Axis(values6).setHasLines(false));
         previewdata.getLines().get(0).setColor(ChartUtils.DEFAULT_DARKEN_COLOR);
 
     }
@@ -435,8 +468,8 @@ public class AlertListFragment extends Fragment {
     }
 
     private void previewX(boolean animate) {
-        Viewport tempViewport = new Viewport(chart.getMaximumViewport());
-        float dx = tempViewport.width() / 4;
+        Viewport tempViewport = new Viewport(chart.getCurrentViewport());
+        float dx = tempViewport.width() / 2;
         tempViewport.inset(dx, 0);
         if (animate) {
             previewChart.setCurrentViewportWithAnimation(tempViewport);
@@ -450,10 +483,50 @@ public class AlertListFragment extends Fragment {
         // Better to not modify viewport of any chart directly so create a copy.
         Viewport tempViewport = new Viewport(chart.getMaximumViewport());
         // Make temp viewport smaller.
-        float dx = tempViewport.width() / 4;
+        float dx = tempViewport.width() / 2;
         float dy = tempViewport.height() / 4;
         tempViewport.inset(dx, dy);
         previewChart.setCurrentViewportWithAnimation(tempViewport);
+    }
+
+    //Utility Functions
+
+
+    //Event Bus Methods
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessage(Events.ActivityFragmentMessage fragmentMessage) {
+
+        lowerlimit = fragmentMessage.getLow_limit();
+        upperlimit = fragmentMessage.getHigh_limit();
+        generateDefaultData(sensorCollection, lowerlimit, upperlimit);
+        LoadChart();
+
+
+    }
+
+
+    //Value Touch Listener for graph
+
+
+    private class ValueTouchListener implements LineChartOnValueSelectListener {
+        float x = 0;
+
+        @Override
+        @SuppressWarnings("deprecation")
+        public void onValueSelected(int lineIndex, int pointIndex, PointValue value) {
+            x = value.getY();
+
+        }
+
+        @Override
+        public void onValueDeselected() {
+            // TODO Auto-generated method stub
+            Toast.makeText(getActivity(), "Selected: " + x, Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
 

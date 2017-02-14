@@ -8,10 +8,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.quascenta.petersroad.droidtag.EventBus.Events;
-import com.quascenta.petersroad.droidtag.EventBus.GlobalBus;
 import com.quascenta.petersroad.droidtag.R;
 
-import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,8 +41,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     @Bind(R.id.bsf_sb_lowerlimit)
     SeekBar s_lowerlimit;
 
-    boolean x1 = false, y1 = false;
-    int x = 0, y = 0;
+
+    int x, x2 = 0, y, y2 = 0;
     Events.FragmentActivityMessage fragmentActivityMessageEvent;
 
     public void getLimits(float x, float y) {
@@ -62,36 +61,40 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     @OnClick(R.id.bsf_ok)
     public void click() {
 
+        EventBus.getDefault().post(new Events.ActivityFragmentMessage((float) x2, (float) y2));
+        super.dismiss();
     }
 
     @Override
     public void setupDialog(final Dialog dialog, int style) {
         super.setupDialog(dialog, style);
+
+        //TODO recieve x and y values as arguements
         x = 25;
         y = 55;
-
 
         View contentView = View.inflate(getContext(), R.layout.export_bottomsheet, null);
         ButterKnife.bind(this, contentView);
         dialog.setContentView(contentView);
-        GlobalBus.getBus().register(this);
-        s_lowerlimit.setMax(y);
+
+        s_lowerlimit.setProgress(x);
         s_upperlimit.setProgress(y);
-        lowerlimit1.setText(String.valueOf(y));
+        lowerlimit.setText("Limit (Start)  " + String.valueOf(x));
+        upperlimit.setText("Limit (End)    " + String.valueOf(y));
+        lowerlimit1.setText(String.valueOf(100));
         upperlimit1.setText(String.valueOf(100));
         s_upperlimit.setProgress(y);
         s_lowerlimit.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
-                if (i >= seekBar.getMax() && i > s_upperlimit.getProgress()) {
-                    lowerlimit.setText("Limit (Start)  " + String.valueOf(seekBar.getMax()));
-                    s_upperlimit.setProgress(i);
-                    Toast.makeText(getContext(), "Lower limit cannot be set greater to that of higherlimit, Please Change the value", Toast.LENGTH_SHORT).show();
+
+                lowerlimit.setText("Limit (Start)  " + String.valueOf(i));
+
                 }
 
 
-            }
+
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -101,13 +104,27 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
-                x = seekBar.getProgress();
-                if (seekBar.getProgress() >= s_upperlimit.getProgress())
-                    lowerlimit.setText("Limit (Start)  " + String.valueOf(seekBar.getProgress()));
-                s_upperlimit.setProgress(seekBar.getProgress());
-                Toast.makeText(getContext(), "Higher is set greater than lower,Hence value is reset", Toast.LENGTH_SHORT).show();
 
+                //IF lower limit is greater than the upper limit  reset it back to its previous value
+                if (seekBar.getProgress() >= s_upperlimit.getProgress()) {
+                    if (x >= s_upperlimit.getProgress()) {
+                        //Resetting back to original
+                        s_upperlimit.setProgress(y);
+                        seekBar.setProgress(25);
+                        lowerlimit.setText("Limit (Start)  " + String.valueOf(x));
+                        upperlimit.setText("Limit (End)    " + String.valueOf(y));
+                        Toast.makeText(getContext(), "Invalid Data . Values being reset " + String.valueOf(s_upperlimit.getProgress()), Toast.LENGTH_SHORT).show();
+                    }
+                    //Resetting only the lower limit
+                    else {
+                        s_lowerlimit.setProgress(x);
+                        lowerlimit.setText("Limit (Start)  " + String.valueOf(x));
+                    }
 
+                } else {
+                    x2 = seekBar.getProgress();
+                    lowerlimit.setText("Limit (Start)  " + String.valueOf(x2));
+                }
             }
         });
 
@@ -115,12 +132,9 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
-                if (i < s_lowerlimit.getProgress()) {
-                    upperlimit.setText("Limit (End)  " + String.valueOf(i));
-                    i = s_lowerlimit.getProgress();
-                } else {
+                upperlimit.setText("Limit (End)    " + String.valueOf(i));
 
-                }
+
             }
 
             @Override
@@ -131,29 +145,31 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+                if (seekBar.getProgress() <= s_lowerlimit.getProgress()) {
 
-                if (seekBar.getProgress() > s_lowerlimit.getProgress()) {
-                    y = seekBar.getProgress();
-                    s_lowerlimit.setMax(y);
-                    upperlimit.setText("Limit (End)  " + String.valueOf(y));
-                } else if (seekBar.getProgress() < s_lowerlimit.getProgress()) {
-                    seekBar.setProgress(s_lowerlimit.getProgress());
-                    upperlimit.setText("Limit (End)  " + String.valueOf(s_lowerlimit.getProgress()));
-                    Toast.makeText(getContext(), "Resetting lowerlimit to its original" + String.valueOf(s_lowerlimit.getProgress()), Toast.LENGTH_SHORT).show();
+                    //Resetting the original value recieved
+                    if (y < s_lowerlimit.getProgress()) {
+                        seekBar.setProgress(y);
+                        s_lowerlimit.setProgress(x);
+                        lowerlimit.setText("Limit (Start)  " + String.valueOf(x));
+                        upperlimit.setText("Limit (End)    " + String.valueOf(y));
+                        Toast.makeText(getContext(), "Invalid Data . Values being reset to " + String.valueOf(s_upperlimit.getProgress()), Toast.LENGTH_SHORT).show();
+                } else {
+                        seekBar.setProgress(y);
+                        upperlimit.setText("Limit (End)    " + String.valueOf(y));
+                    }
+                } else {
+
+                    y2 = seekBar.getProgress();
+                    upperlimit.setText("Limit (End)    " + String.valueOf(seekBar.getProgress()));
                 }
+
             }
         });
 
     }
 
 
-    @Subscribe
-    public void getMessage(Events.ActivityFragmentMessage activityFragmentMessage) {
-        //Write code to perform action after event is received.
-        x = ((int) activityFragmentMessage.getLow_limit());
-        y = ((int) activityFragmentMessage.getHigh_limit());
-
-    }
 
 
 }
