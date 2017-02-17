@@ -95,7 +95,7 @@ public class DevicesActivity1 extends BaseActivity {
         startDate = new DateTime(2016, 6, 10, 5, 0, 0, 0);
         endDate = new DateTime(2016, 10, 10, 5, 0, 0, 0);
         headerView = new HeaderView(this);
-        deviceViewModelCollection = new DeviceViewCollection(startDate, endDate);
+
         builder = provideTvShowCollectionRendererBuilder(this);
         draggableView = (DraggableView) findViewById(R.id.draggable_view);
         adapter = provideTvShowRendererAdapter(builder, deviceViewModelCollection);

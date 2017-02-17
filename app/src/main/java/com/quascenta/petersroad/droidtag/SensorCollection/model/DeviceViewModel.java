@@ -21,6 +21,9 @@ public class DeviceViewModel {
   private String start_from;
 
 
+    private int status;
+
+
     private int month_count;
 
   private String destination_to;
@@ -32,7 +35,7 @@ public class DeviceViewModel {
     private String destination_company, start_company;
     private String[] ListOfMonths;
 
-    public DeviceViewModel(long id, String title, DateTime start_time, DateTime end_time, String start_from, String destination_to, String destination_company, String start_company) {
+    public DeviceViewModel(long id, String title, DateTime start_time, DateTime end_time, String start_from, String destination_to, String destination_company, String start_company, int status) {
         this.DEVICE_ID = id;
         this.title = title;
         this.start_time = start_time;
@@ -41,10 +44,20 @@ public class DeviceViewModel {
         this.destination_to = destination_to;
         this.destination_company = destination_company;
         this.start_company = start_company;
+        this.status = status;
+
         ListOfMonths = differenceinMonths();
         sensorCollection = new SensorCollection();
 
 
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public void AddMonth(int i) {

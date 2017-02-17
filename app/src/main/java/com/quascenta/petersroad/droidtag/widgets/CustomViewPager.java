@@ -19,6 +19,7 @@ public class CustomViewPager extends ViewPager {
         this.enabled = true;
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (this.enabled) {

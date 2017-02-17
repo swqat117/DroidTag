@@ -24,17 +24,17 @@ public class DeviceViewCollection implements AdapteeCollection<DeviceViewModel> 
 
         this.Monthly_sensors_collection_list = new LinkedList<SensorCollection>();
         this.deviceViewModelsList = new LinkedList<DeviceViewModel>();
-        deviceViewModelsList.add(addSingle(1, "Device01", "MAA", startdate.minusMonths(3), enddate.minusMonths(3), "DEL", "Sensor", 2, 1, "Easy Solutions", "LoremIpsum Ltd"));
+        deviceViewModelsList.add(addSingle(1, "Device01", "MAA", startdate.minusMonths(3), enddate.minusMonths(3), "DEL", "Sensor", 2, 1, "Easy Solutions", "LoremIpsum Ltd", 0));
         System.out.println("Device 1 added");
-        deviceViewModelsList.add(addSingle(2, "Device02", "BOM", startdate.minusMonths(5), enddate.minusMonths(5), "BLE", "Sensor", 2, 1, "LoremIpsum Ltd", "Convergence Tech"));
+        deviceViewModelsList.add(addSingle(2, "Device02", "BOM", startdate.minusMonths(5), enddate.minusMonths(5), "BLE", "Sensor", 2, 1, "LoremIpsum Ltd", "Convergence Tech", 1));
         System.out.println("Device 2 added");
-        deviceViewModelsList.add(addSingle(3, "Device03", "BLE", startdate.minusMonths(1), enddate.minusMonths(1), "MAA", "Sensor", 2, 1, "Easy Solutions", "Arial"));
+        deviceViewModelsList.add(addSingle(3, "Device03", "BLE", startdate.minusMonths(1), enddate.minusMonths(1), "MAA", "Sensor", 2, 1, "Easy Solutions", "Arial", 2));
         System.out.println("Device 3 added");
-        deviceViewModelsList.add(addSingle(4, "Device04", "DEL", startdate, enddate, "KOL", "Sensor", 2, 1, "Arial", "Hindustan Unilever"));
+        deviceViewModelsList.add(addSingle(4, "Device04", "DEL", startdate, enddate, "KOL", "Sensor", 2, 1, "Arial", "Hindustan Unilever", 0));
         System.out.println("Device 4 added");
-        deviceViewModelsList.add(addSingle(5, "Device05", "GGN", startdate, enddate, "BOM", "Sensor", 2, 1, "Tata Consultancy Services", "Easy Solutions"));
+        deviceViewModelsList.add(addSingle(5, "Device05", "GGN", startdate, enddate, "BOM", "Sensor", 2, 1, "Tata Consultancy Services", "Easy Solutions", 1));
         System.out.println("Device 5 added");
-        deviceViewModelsList.add(addSingle(6, "Device06", "KOL", startdate.minusMonths(6), enddate.minusMonths(6), "GGN", "Sensor", 2, 1, "Easy Solutions", "Tata Consultancy Services"));
+        deviceViewModelsList.add(addSingle(6, "Device06", "KOL", startdate.minusMonths(6), enddate.minusMonths(6), "GGN", "Sensor", 2, 1, "Easy Solutions", "Tata Consultancy Services", 2));
         System.out.println("------------------------------------------Completed");
 
 
@@ -91,8 +91,8 @@ public class DeviceViewCollection implements AdapteeCollection<DeviceViewModel> 
     }
 //TODO need to sort through month view
 
-    private DeviceViewModel addSingle(long id, String devicename, String from, DateTime startdate, DateTime enddate, String to, String sensortitle, int temp_no, int rh_no, String from_Company, String destination_company) {
-        DeviceViewModel deviceViewModel = new DeviceViewModel(id, devicename, startdate, enddate, from, to, from_Company, destination_company);
+    private DeviceViewModel addSingle(long id, String devicename, String from, DateTime startdate, DateTime enddate, String to, String sensortitle, int temp_no, int rh_no, String from_Company, String destination_company, int x) {
+        DeviceViewModel deviceViewModel = new DeviceViewModel(id, devicename, startdate, enddate, from, to, from_Company, destination_company, x);
         LinkedList<SensorCollection> monthsView = new LinkedList<SensorCollection>();
         for (LocalDate date = startdate.toLocalDate(); date.isBefore(enddate.toLocalDate()); date = date.plusDays(1)) {
             if (date.monthOfYear().get() == 1)

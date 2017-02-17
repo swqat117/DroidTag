@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.adapters.SlideInLeftAnimationAdapter;
@@ -69,10 +71,14 @@ public class AlertListFragment extends Fragment {
     DeviceRenderer.OnItemClickListener x;
     RVRendererAdapter<DeviceViewModel> adapter;
     DeviceCollectionRendererBuilder builder;
+
+    @Inject
     DeviceViewCollection deviceViewModelCollection;
+
     @Bind(R.id.rv_devices)
     RecyclerView recyclerView;
     BottomSheetFragment bottomSheetDialogFragment = new BottomSheetFragment();
+
 
     LineChartView chart;
     PreviewLineChartView previewChart;
@@ -93,6 +99,7 @@ public class AlertListFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        ((MyApp) getActivity().getApplication()).getComponent().inject(this);
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
@@ -102,6 +109,7 @@ public class AlertListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View ConvertView = inflater.inflate(R.layout.activity_device, container, false);
         ButterKnife.bind(this, ConvertView);
+
         init(ConvertView);
         //TODO add manual dates from the app using a calender or a date picker ...
         return ConvertView;
@@ -170,9 +178,6 @@ public class AlertListFragment extends Fragment {
 
         chart = (LineChartView) ConvertView.findViewById(R.id.cubiclinechart);
         previewChart = (PreviewLineChartView) ConvertView.findViewById(R.id.chart_preview);
-        startDate = new DateTime(2016, 6, 10, 5, 0, 0, 0);
-        endDate = new DateTime(2016, 10, 10, 5, 0, 0, 0);
-        deviceViewModelCollection = new DeviceViewCollection(startDate, endDate);
         builder = provideTvShowCollectionRendererBuilder(getActivity());
         draggableView = (DraggableView) ConvertView.findViewById(R.id.draggable_view);
         adapter = provideTvShowRendererAdapter(builder, deviceViewModelCollection);

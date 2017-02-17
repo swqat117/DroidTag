@@ -22,10 +22,13 @@ import java.util.List;
 
 public class DevicesActivity2 extends BaseActivity {
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_layoutwithviewpager);
+
         init();
     }
 
@@ -68,12 +71,14 @@ public class DevicesActivity2 extends BaseActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new AlertListFragment(), "ALERT TRACKER");
-        adapter.addFragment(new AlertListFragment(), "REPORT");
+        adapter.addFragment(new ReportGenerationFragment(), "REPORT");
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
         if (viewPager != null) {
 
         }
+
     }
 
     static class Adapter extends FragmentPagerAdapter {

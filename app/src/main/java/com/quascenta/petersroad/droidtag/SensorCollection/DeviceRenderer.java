@@ -64,12 +64,6 @@ public class DeviceRenderer extends Renderer<DeviceViewModel> {
     protected void hookListeners(View view) {
         //Empty
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
     }
 
     /**
