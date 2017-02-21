@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.thoughtbot.expandablecheckrecyclerview.viewholders.CheckableChildViewHolder;
 
 import butterknife.Bind;
@@ -27,8 +26,10 @@ public class MultiCheckDeviceViewHolder extends CheckableChildViewHolder {
     RelativeLayout relativeLayout;
     @Bind(R.id.iv_icon_alert)
     ImageView iv_status;
+
     @Bind(R.id.iv2_icon_alert)
     ImageView iv2_status;
+
     @Bind(R.id.source_company_name)
     TextView mSource_company_name;
     @Bind(R.id.source_location)
@@ -56,7 +57,7 @@ public class MultiCheckDeviceViewHolder extends CheckableChildViewHolder {
 
     @Override
     public Checkable getCheckable() {
-        mview.setBackgroundColor(Color.parseColor("#33ee44"));
+
         return checkBox;
 
     }
@@ -77,27 +78,27 @@ public class MultiCheckDeviceViewHolder extends CheckableChildViewHolder {
         this.customer_tracking_id.setText(customer_tracking_id);
     }
 
-    public void getIv2_status(int x) {
+    public void getIv_status(int x) {
 
         if (x == 0) {
-            Picasso.with(context).load(R.drawable.message_alert).resize(30, 30).into(iv2_status);
+            iv_status.setImageResource(R.drawable.message_alert);
         } else if (x == 1) {
-            Picasso.with(context).load(R.drawable.message_alert).resize(30, 30).into(iv2_status);
+            iv_status.setImageResource(R.drawable.ic_error_black_24dp);
         } else if (x == 2) {
-            Picasso.with(context).load(R.drawable.ic_alarm_on_black_24dp).resize(30, 30).into(iv2_status);
+            iv_status.setImageResource(R.drawable.ic_check_circle_black_24dp);
         }
 
     }
 
 
-    public void getIv_status(int x) {
+    public void getIv2_status(int x) {
 
         if (x == 0) {
-            Picasso.with(context).load(R.drawable.ic_error_black_24dp).resize(60, 60).into(iv_status);
+            iv2_status.setImageResource(R.drawable.ic_error_black_24dp);
         } else if (x == 1) {
-            Picasso.with(context).load(R.drawable.ic_error_black_24dp).resize(60, 60).into(iv_status);
+            iv2_status.setImageResource(R.drawable.ic_error_black_24dp);
         } else if (x == 2) {
-            Picasso.with(context).load(R.drawable.ic_check_circle_black_24dp).resize(60, 60).into(iv_status);
+            iv2_status.setImageResource(R.drawable.ic_check_circle_black_24dp);
         }
 
     }

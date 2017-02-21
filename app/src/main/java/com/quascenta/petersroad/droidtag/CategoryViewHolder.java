@@ -34,7 +34,7 @@ public class CategoryViewHolder extends GroupViewHolder {
         }
         if (genre instanceof MultiCheckCategory) {
             genreName.setText(genre.getTitle());
-            icon.setBackgroundResource(((MultiCheckCategory) genre).getIconResId());
+            //  icon.setBackgroundResource(((MultiCheckCategory) genre).getIconResId());
         }
         if (genre instanceof SingleCheckGenre) {
             genreName.setText(genre.getTitle());

@@ -31,10 +31,11 @@
             <ImageView
                 android:id="@+id/iv_icon_alert"
                 android:layout_width="40dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_below="@+id/customer_tracking_id"
                 android:layout_marginStart="4dp"
-                android:src="@drawable/message_alert" />
+
+                />
 
 
             <TextView
@@ -80,22 +81,6 @@
 
             </include>
 
-            <TextView
-                android:id="@+id/status_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/line4"
-                android:layout_below="@+id/line4"
-                android:layout_marginEnd="68dp"
-                android:layout_marginLeft="12dp"
-                android:ellipsize="end"
-                android:fontFamily="sans-serif-condensed"
-                android:maxLines="1"
-                android:maxWidth="150dp"
-                android:text="Data Not Uploaded"
-                android:textColor="#f44336"
-                android:textSize="8sp"
-                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/source_company_name"

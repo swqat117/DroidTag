@@ -15,12 +15,19 @@
 
     <ImageView
         android:id="@+id/iv2_icon_alert"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="20dip"
+        android:layout_height="20dip"
         android:layout_centerHorizontal="true"
         android:alpha="1"
         android:src="@drawable/ic_error_black_24dp" />
 
+    <TextView
+        android:id="@+id/status_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv2_icon_alert"
+        android:layout_centerHorizontal="true"
+        android:textSize="8sp" />
     <TextView
         android:id="@+id/leftarrow"
         android:layout_width="wrap_content"
