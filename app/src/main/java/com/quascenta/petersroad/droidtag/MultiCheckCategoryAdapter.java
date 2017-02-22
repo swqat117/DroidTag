@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 public class MultiCheckCategoryAdapter extends
-        CheckableChildRecyclerViewAdapter<CategoryViewHolder, MultiCheckDeviceViewHolder> {
+        CheckableChildRecyclerViewAdapter<CategoryViewHolder, MultiCheckDeviceViewHolder1> {
 
     DeviceViewCollection deviceViewCollection;
 
@@ -26,15 +26,15 @@ public class MultiCheckCategoryAdapter extends
     }
 
     @Override
-    public MultiCheckDeviceViewHolder onCreateCheckChildViewHolder(ViewGroup parent, int viewType) {
+    public MultiCheckDeviceViewHolder1 onCreateCheckChildViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.device_show_row1, parent, false);
-        return new MultiCheckDeviceViewHolder(view);
+        return new MultiCheckDeviceViewHolder1(view);
     }
 
     @Override
-    public void onBindCheckChildViewHolder(MultiCheckDeviceViewHolder holder, int position,
+    public void onBindCheckChildViewHolder(MultiCheckDeviceViewHolder1 holder, int position,
                                            CheckedExpandableGroup group, int childIndex) {
 
         //TODO add dependency for artist object
@@ -44,9 +44,7 @@ public class MultiCheckCategoryAdapter extends
         holder.setmDestination_location(artist.getDestination_to());
         holder.setmSource_company_name(artist.getStart_company());
         holder.setmDestination_company_name(artist.getDestination_company());
-        holder.setStatus_state(artist.getStatus());
-        holder.getIv_status(artist.getStatus());
-        holder.getIv2_status(artist.getStatus());
+        holder.getState(artist.getStatus());
 
 
     }

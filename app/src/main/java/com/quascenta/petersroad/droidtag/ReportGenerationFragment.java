@@ -62,7 +62,7 @@ public class ReportGenerationFragment extends Fragment {
         List<DeviceViewModel> deviceViewModels = new ArrayList<>();
 
         for (int i = 0; i < deviceViewCollection.size(); i++) {
-            if (deviceViewCollection.get(i).getStatus() == 2) {
+            if (deviceViewCollection.get(i).getStatus() == 1) {
                 deviceViewModels.add(deviceViewCollection.get(i));
             }
         }
@@ -75,7 +75,7 @@ public class ReportGenerationFragment extends Fragment {
         List<DeviceViewModel> deviceViewModels = new ArrayList<>();
 
         for (int i = 0; i < deviceViewCollection.size(); i++) {
-            if (deviceViewCollection.get(i).getStatus() == 1)
+            if (deviceViewCollection.get(i).getStatus() == 2)
                 deviceViewModels.add(deviceViewCollection.get(i));
         }
 
@@ -97,7 +97,7 @@ public class ReportGenerationFragment extends Fragment {
 
     public static MultiCheckCategory makeMultiAllDevicesCheckCategory(DeviceViewCollection deviceViewCollection) {
 
-        return new MultiCheckCategory("All Devices", make_allDevices(deviceViewCollection), R.drawable.humidity);
+        return new MultiCheckCategory("All Devices", make_allDevices(deviceViewCollection), R.drawable.ic_launcher);
     }
 
      /*  public static List<MultiCheckGenre> makeMultiCheckGenres() {
@@ -128,17 +128,17 @@ public class ReportGenerationFragment extends Fragment {
 
     public static MultiCheckCategory make_Completed_DevicesCheckCategory(DeviceViewCollection deviceViewCollection) {
 
-        return new MultiCheckCategory("Completed Devices", make_CompletedDevices(deviceViewCollection), R.drawable.humidity);
+        return new MultiCheckCategory("Completed Devices", make_CompletedDevices(deviceViewCollection), R.drawable.ic_launcher);
     }
 
     public static MultiCheckCategory make_Alerted_DevicesCheckCategory(DeviceViewCollection deviceViewCollection) {
 
-        return new MultiCheckCategory("Alerted Devices", make_AlertedDevices(deviceViewCollection), R.drawable.humidity);
+        return new MultiCheckCategory("Alerted Devices", make_AlertedDevices(deviceViewCollection), R.drawable.ic_launcher);
     }
 
     public static MultiCheckCategory make_notUploaded_DevicesCheckCategory(DeviceViewCollection deviceViewCollection) {
 
-        return new MultiCheckCategory("Not Uploaded", make_DataNotUploadedDevices(deviceViewCollection), R.drawable.humidity);
+        return new MultiCheckCategory("Not Uploaded", make_DataNotUploadedDevices(deviceViewCollection), R.drawable.ic_launcher);
     }
 
     @OnClick(R.id.clear_button)

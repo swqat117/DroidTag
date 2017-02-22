@@ -34,7 +34,8 @@ public class CategoryViewHolder extends GroupViewHolder {
         }
         if (genre instanceof MultiCheckCategory) {
             genreName.setText(genre.getTitle());
-            //  icon.setBackgroundResource(((MultiCheckCategory) genre).getIconResId());
+            icon.setBackgroundResource(((MultiCheckCategory) genre).getIconResId());
+
         }
         if (genre instanceof SingleCheckGenre) {
             genreName.setText(genre.getTitle());
@@ -50,6 +51,19 @@ public class CategoryViewHolder extends GroupViewHolder {
     @Override
     public void collapse() {
         animateCollapse();
+    }
+
+
+    public void setImage(String x) {
+
+        if (x.equalsIgnoreCase("data not uploaded")) {
+            icon.setImageResource(R.drawable.ic_place_yellow);
+        } else if (x.equalsIgnoreCase("data alert")) {
+            icon.setImageResource(R.drawable.ic_place_black_24dp);
+        } else if (x.equalsIgnoreCase(" success")) {
+            icon.setImageResource(R.drawable.ic_place_green_24dp);
+        }
+
     }
 
     private void animateExpand() {

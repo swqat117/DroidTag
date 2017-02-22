@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.pedrogomez.renderers.Renderer;
 import com.quascenta.petersroad.droidtag.R;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewModel;
+import com.quascenta.petersroad.droidtag.widgets.Line_view;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -29,8 +30,6 @@ public class DeviceRenderer extends Renderer<DeviceViewModel> {
     RelativeLayout relativeLayout;
     @Bind(R.id.iv_icon_alert)
     ImageView iv_status;
-    @Bind(R.id.iv2_icon_alert)
-    ImageView iv2_status;
     @Bind(R.id.source_company_name)
     TextView mSource_company_name;
     @Bind(R.id.source_location)
@@ -41,8 +40,8 @@ public class DeviceRenderer extends Renderer<DeviceViewModel> {
     TextView mDestination_location;
     @Bind(R.id.customer_tracking_id)
     TextView customer_tracking_id;
-    @Bind(R.id.status_state)
-    TextView status_state;
+    Line_view line_view;
+
 
     public DeviceRenderer(Context context) {
 
@@ -56,6 +55,7 @@ public class DeviceRenderer extends Renderer<DeviceViewModel> {
     @Override
     protected void setUpView(View view) {
         mview = view;
+        line_view = (Line_view) view.findViewById(R.id.line4);
         ButterKnife.bind(this, view);
 
     }
@@ -85,7 +85,8 @@ public class DeviceRenderer extends Renderer<DeviceViewModel> {
         mSource_location.setText(deviceViewModel.getStart_from());
         mDestination_location.setText(deviceViewModel.getDestination_to());
         customer_tracking_id.setText("#1021110" + String.valueOf(deviceViewModel.getDEVICE_ID()));
-        status_state.setText("Data not Uploaded");
+        line_view.setState(deviceViewModel.getStatus());
+
 
 
     }
