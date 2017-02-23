@@ -91,8 +91,8 @@ public class MyAdapter extends BaseAdapter implements StickyListHeadersAdapter {
         String headerText = "" + String.valueOf(MonthCollection.get(position).getDateTime().monthOfYear().getAsText());
 
         holder.text1.setText(headerText);
-        Picasso.with(context).load(R.drawable.ic_thermometer_white_48dp).resize(90, 80).into(holder.image1);
-        Picasso.with(context).load(R.drawable.ic_water_percent_white_48dp).resize(90, 80).into(holder.image2);
+        Picasso.with(context).load(R.drawable.ic_thermometer_white_36dp).resize(80, 80).into(holder.image1);
+        Picasso.with(context).load(R.drawable.ic_water_percent_white_36dp).resize(80, 80).into(holder.image2);
         holder.avgtemp.setText(String.format("Avg : %.1f%cC", MonthCollection.get(position).getTemp_sensor_Sensor(0), (char) 0x00B0));
         holder.avgrh.setText(String.format("Avg : %,.1f%% ", MonthCollection.get(position).getTemp_sensor_Sensor(1)));
 

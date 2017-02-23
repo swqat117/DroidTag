@@ -70,6 +70,11 @@
         <item name="android:textColor">@color/grey</item>
     </style>
 
+    <style name="stickylist_textview">
+        <item name="android:textSize">@dimen/episode_number1</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
     <style name="episode_title">
         <item name="android:layout_marginTop">@dimen/episode_title_margin_top</item>
         <item name="android:layout_marginLeft">@dimen/episode_title_margin_left</item>
@@ -114,6 +119,7 @@
     <dimen name="episodes_header_padding_left">16dip</dimen>
     <dimen name="episode_padding_left_right">6dip</dimen>
     <dimen name="episode_number">22sp</dimen>
+    <dimen name="episode_number1">12sp</dimen>
     <dimen name="episode_title">14sp</dimen>
     <dimen name="episode_title_margin_top">6dip</dimen>
     <dimen name="episode_title_margin_left">8dip</dimen>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.quascenta.petersroad.droidtag.widgets.CircularProgress.CircleProgressView xmlns:CircleProgressView="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/circleView"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        CircleProgressView:cpv_autoTextSize="false"
+        CircleProgressView:cpv_barColor="#008891"
+        CircleProgressView:cpv_barWidth="5dp"
+        CircleProgressView:cpv_blockCount="10"
+        CircleProgressView:cpv_blockScale=".9"
+        CircleProgressView:cpv_fillColor="#008891"
+        CircleProgressView:cpv_innerContourSize="0dp"
+        CircleProgressView:cpv_outerContourSize="0dp"
+        CircleProgressView:cpv_rimColor="#CDCBA6"
+        CircleProgressView:cpv_rimWidth="5dp"
+        CircleProgressView:cpv_seekMode="false"
+        CircleProgressView:cpv_showUnit="false"
+        CircleProgressView:cpv_spinColor="@color/colorPrimary"
+        CircleProgressView:cpv_textColor="#CDCBA6"
+        CircleProgressView:cpv_textMode="Value"
+        CircleProgressView:cpv_textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_status_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        android:text="Completed"
+        android:textColor="#CDCBA6"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+</LinearLayout>

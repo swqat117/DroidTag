@@ -8,10 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewCollection;
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewModel;
+import com.quascenta.petersroad.droidtag.widgets.DashboardView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +21,6 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by AKSHAY on 2/15/2017.
@@ -29,17 +28,14 @@ import butterknife.OnClick;
 
 public class ReportGenerationFragment extends Fragment {
 
-
+    static int alert = 0, pending = 0, completed = 0;
     @Inject
     DeviceViewCollection deviceViewCollection;
 
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
-    @Bind(R.id.clear_button)
-    Button clear;
-    @Bind(R.id.check_first_child)
-    Button check;
 
+    DashboardView dashboardView;
 
     private MultiCheckCategoryAdapter adapter;
 
@@ -64,6 +60,8 @@ public class ReportGenerationFragment extends Fragment {
         for (int i = 0; i < deviceViewCollection.size(); i++) {
             if (deviceViewCollection.get(i).getStatus() == 1) {
                 deviceViewModels.add(deviceViewCollection.get(i));
+                completed++;
+
             }
         }
 
@@ -77,6 +75,7 @@ public class ReportGenerationFragment extends Fragment {
         for (int i = 0; i < deviceViewCollection.size(); i++) {
             if (deviceViewCollection.get(i).getStatus() == 2)
                 deviceViewModels.add(deviceViewCollection.get(i));
+            alert++;
         }
 
         return deviceViewModels;
@@ -89,6 +88,7 @@ public class ReportGenerationFragment extends Fragment {
         for (int i = 0; i < deviceViewCollection.size(); i++) {
             if (deviceViewCollection.get(i).getStatus() == 0)
                 deviceViewModels.add(deviceViewCollection.get(i));
+            pending++;
         }
 
         return deviceViewModels;
@@ -141,7 +141,7 @@ public class ReportGenerationFragment extends Fragment {
         return new MultiCheckCategory("Not Uploaded", make_DataNotUploadedDevices(deviceViewCollection), R.drawable.ic_launcher);
     }
 
-    @OnClick(R.id.clear_button)
+ /*   @OnClick(R.id.clear_button)
     public void onclick() {
         adapter.clearChoices();
     }
@@ -149,7 +149,7 @@ public class ReportGenerationFragment extends Fragment {
     @OnClick(R.id.check_first_child)
     public void oncheck() {
         adapter.checkChild(true, 0, 3);
-    }
+    }*/
 
     @Nullable
     @Override
@@ -157,14 +157,29 @@ public class ReportGenerationFragment extends Fragment {
         View ConvertView = inflater.inflate(R.layout.fragment_multicheck, container, false);
         ButterKnife.bind(this, ConvertView);
         ((MyApp) getActivity().getApplication()).getComponent().inject(this);
+        dashboardView = (DashboardView) ConvertView.findViewById(R.id.dashboard_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         adapter = new MultiCheckCategoryAdapter(makeMultiCheckCategories(deviceViewCollection));
         recyclerView.setLayoutManager(layoutManager);
+        initDashBoard(deviceViewCollection);
         recyclerView.setAdapter(adapter);
 
 
         return ConvertView;
     }
+
+    public void initDashBoard(DeviceViewCollection deviceViewCollection) {
+        dashboardView.setDevices_All(100, deviceViewCollection.size());
+        dashboardView.setDevices_alerted(deviceViewCollection.size(), 2);
+        dashboardView.setDevices_pending(deviceViewCollection.size(), 2);
+        dashboardView.setDevices_completed(deviceViewCollection.size(), 2);
+
+
+    }
+
+
+
+
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
