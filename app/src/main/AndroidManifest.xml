@@ -1,9 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.quascenta.petersroad.droidtag">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -13,14 +16,12 @@
         android:largeHeap="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
         <activity
             android:name=".SensorCollection.DevicesActivity"
-            android:label="Droidvice"></activity>
+            android:label="Droidvice"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
         <activity
             android:name=".DevicesActivity2"
-
             android:label="Droidvice">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,10 +31,16 @@
         </activity>
         <activity
             android:name=".SensorCollection.DevicesActivity1"
-            android:label="Droidvice">
-
+            android:label="Droidvice"></activity>
+        <activity
+            android:name=".ReportListActivity"
+            android:label="@string/title_activity_report_list"
+            android:parentActivityName=".DevicesActivity2"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.quascenta.petersroad.droidtag.DevicesActivity2" />
         </activity>
-
     </application>
 
 </manifest>
