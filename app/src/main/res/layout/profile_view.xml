@@ -4,8 +4,10 @@
     xmlns:CircleProgressView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    CircleProgressView:cardBackgroundColor="#E7E7DE"
-    CircleProgressView:cardElevation="8dp">
+    android:layout_marginEnd="4dp"
+    android:layout_marginStart="4dp"
+    CircleProgressView:cardBackgroundColor="@android:color/transparent"
+    CircleProgressView:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,6 +18,7 @@
             android:id="@+id/dashboard_all"
             android:layout_width="0dp"
             android:layout_height="80dp"
+
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1">

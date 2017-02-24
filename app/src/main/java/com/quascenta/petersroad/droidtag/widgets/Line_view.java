@@ -21,6 +21,11 @@ import butterknife.ButterKnife;
 
 public class Line_view extends LinearLayout {
 
+    public static final int STATUS_NOT_UPLOADED = 0;
+    public static final int STATUS_SUCCESS = 1;
+    public static final int STATUS_ALERT = 2;
+
+
     @Bind(R.id.iv1_icon_start)
     ImageView start;
     @Bind(R.id.view1_horizontal_line)
@@ -59,7 +64,7 @@ public class Line_view extends LinearLayout {
 
         switch (x) {
 
-            case 1:
+            case STATUS_SUCCESS:
                 start.setImageResource(R.drawable.ic_place_green_24dp);
                 status.setImageResource(R.drawable.ic_check_circle_black_24dp);
                 finish.setImageResource(R.drawable.ic_right_green);
@@ -68,7 +73,7 @@ public class Line_view extends LinearLayout {
                 status_text_state.setTextColor(Color.parseColor("#69F0AE"));
                 status_text_state.setText(" Success");
                 return true;
-            case 2:
+            case STATUS_ALERT:
                 start.setImageResource(R.drawable.ic_place_black_24dp);
                 status.setImageResource(R.drawable.ic_error_black_24dp);
                 finish.setImageResource(R.drawable.ic_chevron_right_black_24dp);
@@ -77,7 +82,7 @@ public class Line_view extends LinearLayout {
                 status_text_state.setTextColor(Color.parseColor("#f44336"));
                 status_text_state.setText("Data Alert");
                 return false;
-            default:
+            case STATUS_NOT_UPLOADED:
                 start.setImageResource(R.drawable.ic_place_yellow);
                 status.setImageResource(R.drawable.ic_error_yellow);
                 finish.setImageResource(R.drawable.ic_yellow_right);
@@ -85,6 +90,8 @@ public class Line_view extends LinearLayout {
                 lineview2.setBackgroundColor(Color.parseColor("#FFC107"));
                 status_text_state.setTextColor(Color.parseColor("#FFCC00"));
                 status_text_state.setText("In Progress");
+                return false;
+            default:
                 return false;
 
         }

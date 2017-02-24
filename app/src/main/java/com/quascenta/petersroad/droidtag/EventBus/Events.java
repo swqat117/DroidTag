@@ -1,5 +1,10 @@
 package com.quascenta.petersroad.droidtag.EventBus;
 
+import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by AKSHAY on 2/10/2017.
  */
@@ -71,6 +76,24 @@ public class Events {
 
         public String getMessage() {
             return message;
+        }
+    }
+
+
+    public static class DeviceList {
+
+        private List<DeviceViewModel> arrayList = new ArrayList<>();
+
+        public DeviceList(List<DeviceViewModel> arrayList) {
+            this.arrayList = arrayList;
+        }
+
+        public List<DeviceViewModel> getList() {
+            return arrayList;
+        }
+
+        public void setList(List<DeviceViewModel> arrayList) {
+            this.arrayList = arrayList;
         }
     }
 

@@ -22,7 +22,7 @@ public class DeviceViewModel {
 
 
     private int status;
-
+    private boolean enabled;
 
     private int month_count;
 
@@ -45,7 +45,7 @@ public class DeviceViewModel {
         this.destination_company = destination_company;
         this.start_company = start_company;
         this.status = status;
-
+        this.enabled = false;
         ListOfMonths = differenceinMonths();
         sensorCollection = new SensorCollection();
 
@@ -197,6 +197,26 @@ public class DeviceViewModel {
 
     }
 
+    public String setStringstatusState() {
+        switch (status) {
+            default:
+                return "In Progress";
+            case 1:
+                return "Success";
+            case 2:
+                return "Data Alert";
+        }
+
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public String getMonth(DateTime dateTime) {
         int x = dateTime.getMonthOfYear();
         switch (x) {
@@ -230,37 +250,5 @@ public class DeviceViewModel {
     }
 
 
-    public String getMonth(int x) {
-
-        switch (x) {
-            case 1:
-                return "Jan";
-            case 2:
-                return "Feb";
-            case 3:
-                return "Mar";
-            case 4:
-                return "Apr";
-            case 5:
-                return "May";
-            case 6:
-                return "Jun";
-            case 7:
-                return "Jul";
-            case 8:
-                return "Aug";
-            case 9:
-                return "Sep";
-            case 10:
-                return "Oct";
-            case 11:
-                return "Nov";
-            case 12:
-                return "Dec";
-            default:
-                return "";
-        }
-
-
-    }
 }
+

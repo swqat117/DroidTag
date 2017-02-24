@@ -1,8 +1,9 @@
 package com.quascenta.petersroad.droidtag.di;
 
-import com.quascenta.petersroad.droidtag.AlertListFragment;
-import com.quascenta.petersroad.droidtag.DevicesActivity2;
-import com.quascenta.petersroad.droidtag.ReportGenerationFragment;
+import com.quascenta.petersroad.droidtag.activities.DevicesActivity2;
+import com.quascenta.petersroad.droidtag.activities.ReportListActivity;
+import com.quascenta.petersroad.droidtag.fragments.AlertListFragment;
+import com.quascenta.petersroad.droidtag.fragments.ReportGenerationFragment;
 
 import javax.inject.Singleton;
 
@@ -20,4 +21,6 @@ public interface AdapterComponent {
     void inject(AlertListFragment alertListFragment);
 
     void inject(ReportGenerationFragment reportGenerationFragment);
+
+    void inject(ReportListActivity reportListActivity);
 }
