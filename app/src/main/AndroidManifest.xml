@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MyApp"
@@ -16,10 +17,19 @@
         android:largeHeap="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.quascenta.petersroad.droidtag.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
         <activity
             android:name=".activities.DevicesActivity"
             android:label="Droidvice"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".activities.DevicesActivity2"
             android:label="Droidvice">
@@ -31,7 +41,7 @@
         </activity>
         <activity
             android:name=".activities.DevicesActivity1"
-            android:label="Droidvice"></activity>
+            android:label="Droidvice" />
         <activity
             android:name=".activities.ReportListActivity"
             android:label="@string/title_activity_report_list"

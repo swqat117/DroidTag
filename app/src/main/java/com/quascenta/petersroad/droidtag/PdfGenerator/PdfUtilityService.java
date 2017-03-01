@@ -4,6 +4,12 @@ package com.quascenta.petersroad.droidtag.PdfGenerator;
  * Created by AKSHAY on 2/28/2017.
  */
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -22,7 +28,9 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.quascenta.petersroad.droidtag.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -52,8 +60,12 @@ public class PDFUtilityService extends PdfPageEventHelper {
      */
     private PdfTemplate total;
 
-    public PDFUtilityService(String title) {
+
+    private Context context;
+
+    public PDFUtilityService(String title, Context context) {
         this.title = title;
+        this.context = context;
     }
 
     /**
@@ -87,7 +99,6 @@ public class PDFUtilityService extends PdfPageEventHelper {
             table.setWidthPercentage(100);
             table.getDefaultCell().setFixedHeight(20);
             table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-
             table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
             table.addCell(String.format("Page %d of", writer.getPageNumber()));
             total.setWidth(100);
@@ -143,11 +154,11 @@ public class PDFUtilityService extends PdfPageEventHelper {
 
                 java.net.URL logoImageURL = getClass().getClassLoader().getResource("resources/images/img-logo.png");
                 //image1 = Image.getInstance(URL + "/images/img-logo.png");
-                image1 = Image.getInstance(logoImageURL);
-                image1.scalePercent(35);
+                image1 = Image.getInstance(check());
+                image1.scalePercent(65);
 
                 PdfPTable header = new PdfPTable(3);
-                float[] columnWidths = {1f, 2f, 1.1f};
+                float[] columnWidths = { 1f, 2f, 1.1f };
                 header.setWidths(columnWidths);
                 header.setTotalWidth(document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin());
                 header.setLockedWidth(true);
@@ -221,6 +232,17 @@ public class PDFUtilityService extends PdfPageEventHelper {
      */
     public void setURL(String uRL) {
         URL = uRL;
+    }
+
+    @SuppressWarnings("deprecation")
+    byte[] check()
+    {
+        Resources res = context.getResources();
+        Drawable drawable = res.getDrawable(R.drawable.logo);
+        Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
     }
 
 }
