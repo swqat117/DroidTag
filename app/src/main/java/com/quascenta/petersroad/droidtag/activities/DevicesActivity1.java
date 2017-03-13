@@ -296,7 +296,7 @@ public class DevicesActivity1 extends BaseActivity {
             switch (x) {
                 case R.id.Settings:
                     //Load Settings page
-                case R.id.change_theme:
+                case R.id.add:
                     //Load theme
 
             }

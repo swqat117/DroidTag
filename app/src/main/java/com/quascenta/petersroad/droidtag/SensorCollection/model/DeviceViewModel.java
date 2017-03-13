@@ -1,5 +1,7 @@
 package com.quascenta.petersroad.droidtag.SensorCollection.model;
 
+import com.quascenta.petersroad.droidtag.Bluetooth.BleConfig;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
@@ -11,28 +13,46 @@ import java.util.ArrayList;
  */
 
 public class DeviceViewModel {
-  private long DEVICE_ID;
 
-  private String title;
+
+    //Is connected
+    private boolean isConnected = false;
+    //Connection Status: 2503 Not Connected       2504 Connected       2505 Connected      2506 Disconnected
+    private int mConnectionState = BleConfig.DISCONNECT;
+
+    //Bluetooth address
+    private String mBleAddress;
+
+    //Bluetooth name
+    private String mBleName;
+    //Bluetooth modified name
+    private String mBleAlias;
+
+    private long DEVICE_ID;
+
+    private String title;
+
     private DateTime start_time;
 
-  private DateTime end_time;
+    private DateTime end_time;
 
-  private String start_from;
-
+    private String start_from;
 
     private int status;
+
     private boolean enabled;
 
     private int month_count;
 
-  private String destination_to;
+    private String destination_to;
 
-  private SensorCollection sensorCollection;
+    private SensorCollection sensorCollection;
 
     private ArrayList<SensorCollection> month_collections;
 
     private String destination_company, start_company;
+
+
     private String[] ListOfMonths;
 
     public DeviceViewModel(long id, String title, DateTime start_time, DateTime end_time, String start_from, String destination_to, String destination_company, String start_company, int status) {
@@ -52,6 +72,10 @@ public class DeviceViewModel {
 
     }
 
+    public DeviceViewModel() {
+
+    }
+
     public int getStatus() {
         return status;
     }
@@ -59,6 +83,7 @@ public class DeviceViewModel {
     public void setStatus(int status) {
         this.status = status;
     }
+
 
     public void AddMonth(int i) {
         month_collections = new ArrayList<SensorCollection>();
@@ -95,6 +120,7 @@ public class DeviceViewModel {
         return month_Collection;
     }
 
+
     public String getDestination_to() {
         return destination_to;
     }
@@ -102,6 +128,7 @@ public class DeviceViewModel {
     public void setDestination_to(String destination_to) {
         this.destination_to = destination_to;
     }
+
 
     public long getDEVICE_ID() {
         return DEVICE_ID;
@@ -111,6 +138,7 @@ public class DeviceViewModel {
         this.DEVICE_ID = DEVICE_ID;
     }
 
+
     public DateTime getEnd_time() {
         return end_time;
     }
@@ -119,6 +147,7 @@ public class DeviceViewModel {
         this.end_time = end_time;
     }
 
+
     public SensorCollection getSensorCollection() {
         return sensorCollection;
     }
@@ -126,6 +155,7 @@ public class DeviceViewModel {
     public void setSensorCollection(SensorCollection sensorCollection) {
         this.sensorCollection = sensorCollection;
     }
+
 
     public String getStart_from() {
         return start_from;
@@ -143,6 +173,17 @@ public class DeviceViewModel {
         this.start_time = start_time;
     }
 
+    public String getStart_company() {
+        return start_company;
+    }
+
+    public void setStart_company(String start_company) {
+        this.start_company = start_company;
+    }
+
+
+
+
     public String getTitle() {
         return title;
     }
@@ -150,6 +191,7 @@ public class DeviceViewModel {
     public void setTitle(String title) {
         this.title = title;
     }
+
 
     public String getDestination_company() {
         return destination_company;
@@ -159,13 +201,6 @@ public class DeviceViewModel {
         this.destination_company = destination_company;
     }
 
-    public String getStart_company() {
-        return start_company;
-    }
-
-    public void setStart_company(String start_company) {
-        this.start_company = start_company;
-    }
 
     public void addSensor(SensorViewModel sensorViewModel) {
         sensorCollection.add(sensorViewModel);
@@ -197,7 +232,7 @@ public class DeviceViewModel {
 
     }
 
-    public String setStringstatusState() {
+    public String getStringstatusState() {
         switch (status) {
             default:
                 return "In Progress";
@@ -249,6 +284,47 @@ public class DeviceViewModel {
         }
     }
 
+    public boolean isConnected() {
+        return isConnected;
+    }
 
+    public void setConnected(boolean connected) {
+        isConnected = connected;
+    }
+
+    public int getConnectionState() {
+        return mConnectionState;
+    }
+
+    public void setConnectionState(int mConnectionState) {
+        this.mConnectionState = mConnectionState;
+    }
+
+    public String getBleAddress() {
+        return mBleAddress;
+    }
+
+    public void setBleAddress(String mBleAddress) {
+        this.mBleAddress = mBleAddress;
+    }
+
+    public String getmBleName() {
+        return mBleName;
+    }
+
+    public void setBleName(String mBleName) {
+        this.mBleName = mBleName;
+    }
+
+    public String getBleAlias() {
+        return mBleAlias;
+    }
+
+    public void setBleAlias(String mBleAlias) {
+        this.mBleAlias = mBleAlias;
+    }
 }
+
+
+
 

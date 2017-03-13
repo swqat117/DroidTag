@@ -17,7 +17,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -67,8 +66,7 @@ public class ReportListActivity extends AppCompatActivity {
 
         ((MyApp) getApplication()).getComponent().inject(this);
         getPermissions();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
 
     }
 
@@ -100,6 +98,7 @@ public class ReportListActivity extends AppCompatActivity {
 
 
     }
+
 
 
     @Override
@@ -149,11 +148,9 @@ public class ReportListActivity extends AppCompatActivity {
         //File path
         if (file.exists()) //Checking for the file is exist or not
         {
-            System.out.println(getApplicationContext().getPackageName());
-            Uri path1 = FileProvider.getUriForFile(this, getApplicationContext().getPackageName(), file);
+            Uri path1 = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
             Intent objIntent = new Intent(Intent.ACTION_VIEW);
             objIntent.setDataAndType(path1, "application/pdf");
-            objIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(objIntent);//Staring the pdf viewer
         } else {
 
@@ -242,6 +239,7 @@ public class ReportListActivity extends AppCompatActivity {
             try {
                 file = pdf.generateFile();
                 path = file.getAbsolutePath();
+                System.out.println(path);
                 if (!file.canRead()) {
                     if (!file.mkdirs()) {
                         Log.d(TAG, "Directory was not created");
@@ -263,7 +261,7 @@ public class ReportListActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean s) {
             p.dismiss();
             try {
-                open(file);
+                open_File(file);
                 Log.d(TAG, "File Opened");
             } catch (Exception e) {
                 Log.e(TAG, "onPostExecute exception");

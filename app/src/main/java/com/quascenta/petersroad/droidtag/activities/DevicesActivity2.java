@@ -1,5 +1,6 @@
 package com.quascenta.petersroad.droidtag.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.quascenta.petersroad.droidtag.R;
+import com.quascenta.petersroad.droidtag.ViewServer;
 import com.quascenta.petersroad.droidtag.fragments.AlertListFragment;
 import com.quascenta.petersroad.droidtag.fragments.ReportGenerationFragment;
 import com.quascenta.petersroad.droidtag.widgets.CustomViewPager;
@@ -26,13 +28,30 @@ import java.util.List;
 public class DevicesActivity2 extends BaseActivity {
 
 
+    // OnCreate -  To init all views
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_layoutwithviewpager);
-
+        ViewServer.get(this).addWindow(this);
         init();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ViewServer.get(this).setFocusedWindow(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+
+
+        super.onDestroy();
+        ViewServer.get(this).removeWindow(this);
     }
 
 
@@ -44,7 +63,8 @@ public class DevicesActivity2 extends BaseActivity {
             case R.id.Settings:
                 return true;
             //Load Settings page
-            case R.id.change_theme:
+            case R.id.add:
+                startActivity(new Intent(this, MainActivity.class));
                 return true;
             //Load theme
 
@@ -53,17 +73,18 @@ public class DevicesActivity2 extends BaseActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.clear();
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-
-        return super.onPrepareOptionsMenu(menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        menu.clear();
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     private void init() {
@@ -72,7 +93,7 @@ public class DevicesActivity2 extends BaseActivity {
         CustomViewPager viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         viewPager.setPagingEnabled(false);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        Adapter adapter = new Adapter(getSupportFragmentManager());
+        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new AlertListFragment(), "ALERT TRACKER");
         adapter.addFragment(new ReportGenerationFragment(), "REPORT");
         viewPager.setOffscreenPageLimit(2);
@@ -84,11 +105,11 @@ public class DevicesActivity2 extends BaseActivity {
 
     }
 
-    static class Adapter extends FragmentPagerAdapter {
+    static class PagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private final List<String> mFragmentTitles = new ArrayList<>();
 
-        public Adapter(FragmentManager fm) {
+        public PagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

@@ -8,8 +8,9 @@
         android:title="@string/settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/change_theme"
-        android:title="Change Theme"
-        app:showAsAction="never" />
+        android:id="@+id/add"
+        android:icon="@drawable/ic_add_black_24dp"
+        android:title="Add Logger"
+        app:showAsAction="ifRoom" />
 
 </menu>

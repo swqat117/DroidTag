@@ -20,7 +20,7 @@
         CircleProgressView:cpv_fillColor="@color/white"
         CircleProgressView:cpv_innerContourSize="0dp"
         CircleProgressView:cpv_outerContourSize="0dp"
-        CircleProgressView:cpv_rimColor="@color/colorPrimary"
+        CircleProgressView:cpv_rimColor="@color/colorPrimaryDark"
         CircleProgressView:cpv_rimWidth="5dp"
         CircleProgressView:cpv_seekMode="false"
         CircleProgressView:cpv_showUnit="false"

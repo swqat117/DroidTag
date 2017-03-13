@@ -1,16 +1,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:attribute="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.quascenta.petersroad.droidtag.widgets.Profilepage
-        android:id="@+id/profile_view"
+    <com.quascenta.petersroad.droidtag.widgets.CurvedContainer
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp">
+
+        android:elevation="20dp"
+        android:scaleType="centerCrop"
+        attribute:curvature="50dp"
+        attribute:gravity="top">
 
 
-    </com.quascenta.petersroad.droidtag.widgets.Profilepage>
+        <com.quascenta.petersroad.droidtag.widgets.Profilepage
+            android:id="@+id/profile_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </com.quascenta.petersroad.droidtag.widgets.Profilepage>
 
     <com.quascenta.petersroad.droidtag.widgets.DashboardView
         android:id="@+id/dashboard_view"
@@ -20,11 +31,19 @@
 
     </com.quascenta.petersroad.droidtag.widgets.DashboardView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@id/dashboard_view"
+            android:background="@color/colorPrimary">
+
+        </View>
+    </com.quascenta.petersroad.droidtag.widgets.CurvedContainer>
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dashboard_view"
-        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/container"
+        android:layout_marginTop="-8dp"
         android:orientation="vertical">
 
         <TextView
@@ -34,22 +53,19 @@
             android:layout_margin="5dp"
             android:background="@drawable/ripple_effect"
             android:clickable="true"
-            android:elevation="4dp"
-            android:padding="20dp"
-            android:text="All Device Loggers" />
+            android:padding="12dp"
+            android:text="@string/all_device_loggers" />
 
         <TextView
             android:id="@+id/Completed_loggers"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
+
             android:background="@drawable/ripple_effect"
             android:clickable="true"
-            android:elevation="4dp"
-            android:padding="20dp"
-            android:text="Completed Loggers" />
+            android:padding="12dp"
+            android:text="@string/completed_loggers" />
 
         <TextView
             android:id="@+id/alerted_loggers"
@@ -58,23 +74,20 @@
             android:layout_margin="5dp"
             android:background="@drawable/ripple_effect"
             android:clickable="true"
-            android:elevation="4dp"
-            android:padding="20dp"
-            android:text="Alerted Loggers" />
+
+            android:padding="12dp"
+            android:text="@string/alerted_loggers" />
 
         <TextView
             android:id="@+id/pending_loggers"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
+
             android:background="@drawable/ripple_effect"
             android:clickable="true"
-
-            android:elevation="4dp"
-            android:padding="20dp"
-            android:text="Pending Loggers" />
+            android:padding="12dp"
+            android:text="@string/pending_loggers" />
     </LinearLayout>
 
 </RelativeLayout>

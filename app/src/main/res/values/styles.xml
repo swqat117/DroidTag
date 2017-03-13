@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -19,6 +19,16 @@
         <attr name="leftLabelStyle" format="reference" />
         <attr name="rightLabelStyle" format="reference" />
     </declare-styleable>
+
+
+    <style name="progressDialog">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">70dip</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:background">@android:color/transparent</item>
+
+    </style>
 
 
     <style name="main_activity_button_title">
@@ -97,6 +107,31 @@
         <item name="android:ellipsize">end</item>
         <item name="android:layout_marginLeft">@dimen/tv_show_title_margin_left_top</item>
     </style>
+
+    <style name="main_title">
+        <item name="android:textColor">@color/text_hard_grey</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_marginLeft">@dimen/tv_show_title_margin_left_top</item>
+    </style>
+
+    <style name="secondary_title">
+        <item name="android:textColor">@color/text_hard_grey</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_marginLeft">@dimen/tv_show_title_margin_left_top</item>
+    </style>
+
+    <style name="tertiary_title">
+        <item name="android:textColor">@color/text_hard_grey</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_marginLeft">@dimen/tv_show_title_margin_left_top</item>
+    </style>
+
 
     <style name="tv_show_seasons_counter">
         <item name="android:layout_marginLeft">@dimen/tv_show_margin_left</item>

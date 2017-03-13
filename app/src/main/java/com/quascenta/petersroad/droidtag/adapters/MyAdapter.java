@@ -31,10 +31,21 @@ public class MyAdapter extends BaseAdapter implements StickyListHeadersAdapter {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.MonthCollection = deviceViewModelCollection.getSensorCollection();
-
-        //  countries = context.getResources().getStringArray(R.array.countries);
     }
 
+    public MyAdapter(Context context) {
+        this.context = context;
+        inflater = LayoutInflater.from(context);
+
+    }
+
+    public SensorCollection getMonthCollection() {
+        return MonthCollection;
+    }
+
+    public void setMonthCollection(SensorCollection monthCollection) {
+        MonthCollection = monthCollection;
+    }
 
     @Override
     public int getCount() {
@@ -103,7 +114,7 @@ public class MyAdapter extends BaseAdapter implements StickyListHeadersAdapter {
     public long getHeaderId(int position) {
         //return the first character of the country as ID because this is what headers are based upon
 
-        return MonthCollection.get(position).getMonth().subSequence(0, 3).charAt(2);
+        return MonthCollection.get(position).getMonthAsLong();
     }
 
     class HeaderViewHolder {
@@ -120,5 +131,6 @@ public class MyAdapter extends BaseAdapter implements StickyListHeadersAdapter {
         TextView text3;
         TextView text;
     }
+
 
 }

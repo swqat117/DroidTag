@@ -1,5 +1,7 @@
 package com.quascenta.petersroad.droidtag.EventBus;
 
+import android.graphics.Bitmap;
+
 import com.quascenta.petersroad.droidtag.SensorCollection.model.DeviceViewModel;
 
 import java.util.ArrayList;
@@ -83,6 +85,7 @@ public class Events {
     public static class DeviceList {
 
         private List<DeviceViewModel> arrayList = new ArrayList<>();
+        private List<DeviceViewModel> arrayList_bitmap = new ArrayList<>();
 
         public DeviceList(List<DeviceViewModel> arrayList) {
             this.arrayList = arrayList;
@@ -98,4 +101,40 @@ public class Events {
     }
 
 
+    public static class ImageBitmap {
+
+        private List<Bitmap> arrayList_bitmap = new ArrayList<>();
+
+        public ImageBitmap(List<Bitmap> arrayList) {
+            this.arrayList_bitmap = arrayList;
+        }
+
+        public List<Bitmap> getList() {
+            return arrayList_bitmap;
+        }
+
+        public void setList(List<Bitmap> arrayList) {
+            this.arrayList_bitmap = arrayList;
+        }
+    }
+
+    public static class Send_BLEDeviceForRegistration<BleDevice> {
+
+
+        private BleDevice content;
+
+        public Send_BLEDeviceForRegistration(BleDevice content) {
+            this.content = content;
+        }
+
+        public BleDevice getContent() {
+            return content;
+        }
+
+        public void setContent(BleDevice content) {
+            this.content = content;
+        }
+
+
+    }
 }

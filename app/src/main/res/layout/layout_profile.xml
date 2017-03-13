@@ -4,7 +4,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent">
+    android:background="@color/colorPrimary"
+    android:elevation="4dp"
+    android:paddingBottom="24dp">
 
 
     <ImageButton
@@ -20,13 +22,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_person_black_24dp" />
 
-    <RelativeLayout
-        android:id="@+id/profile_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        android:paddingBottom="24dp">
+
 
 
         <TextView
@@ -35,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="76dp"
-            android:text="Viral Android"
+            android:text="Akshay"
             android:textColor="#fff"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -47,11 +43,11 @@
             android:layout_below="@+id/user_profile_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
-            android:text="Android free tutorials and example"
-            android:textColor="#fff"
+            android:text="Easy Solutions, Chennai"
+            android:textColor="@color/colorAccent"
             android:textSize="14sp" />
     </RelativeLayout>
 
 
-</RelativeLayout>
+
 

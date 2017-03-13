@@ -4,16 +4,17 @@
     android:id="@+id/ll_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f1f1f1">
+    android:background="@android:color/transparent">
 
     <!-- Grid View -->
 
-    <android.support.v7.widget.RecyclerView
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/rv_devices"
         style="@style/tv_show_grid_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="50dp" />
+
 
     <!-- Draggable View -->
 
@@ -25,7 +26,7 @@
         android:background="@color/black"
         draggable_view:bottom_view_id="@+id/x"
         draggable_view:enable_click_to_maximize_view="true"
-        draggable_view:top_view_id="@+id/chart_frame"
+        draggable_view:top_view_id="@+id/cubiclinechart"
         draggable_view:top_view_margin_bottom="@dimen/top_fragment_margin"
         draggable_view:top_view_margin_right="@dimen/top_fragment_margin"
         draggable_view:top_view_x_scale_factor="@dimen/x_scale_factor"
@@ -36,67 +37,37 @@
             android:id="@+id/x"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/line2">
+            android:layout_below="@+id/cubiclinechart">
 
-            <lecho.lib.hellocharts.view.PreviewLineChartView
+            <com.quascenta.petersroad.droidtag.widgets.PreviewLineChart
                 android:id="@+id/chart_preview"
                 android:layout_width="match_parent"
                 android:layout_height="56dip"
                 android:background="@color/colorPrimaryDark"
                 android:padding="2dip" />
 
-            <View
-                android:id="@+id/line3"
-                android:layout_width="match_parent"
-                android:layout_height="2dip"
-                android:layout_below="@+id/chart_preview"
-
-                android:background="@color/colorPrimary" />
-
-            <LinearLayout
-                android:id="@+id/HeaderOfList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/line3"
-                android:orientation="horizontal"
-
-
-                >
-
-            </LinearLayout>
-
             <se.emilsjolander.stickylistheaders.StickyListHeadersListView
                 android:id="@+id/lv_episodes"
                 style="@style/episodes_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/HeaderOfList" />
+                android:layout_below="@+id/chart_preview">
+
+
+            </se.emilsjolander.stickylistheaders.StickyListHeadersListView>
 
 
         </RelativeLayout>
 
-
-        <FrameLayout
-            android:id="@+id/chart_frame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <lecho.lib.hellocharts.view.LineChartView
+        <com.quascenta.petersroad.droidtag.widgets.LineChart1
                 android:id="@+id/cubiclinechart"
                 android:layout_width="match_parent"
                 android:layout_height="200dip"
                 android:background="@color/colorPrimary"
+            android:padding="4dip" />
 
-                android:padding="-4dip" />
-        </FrameLayout>
 
-        <View
-            android:id="@+id/line2"
-            android:layout_width="match_parent"
-            android:layout_height="2dip"
-            android:layout_below="@+id/chart_frame"
 
-            android:background="@color/colorPrimary" />
 
     </com.github.pedrovgs.DraggableView>
 

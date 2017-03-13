@@ -20,7 +20,9 @@
             app:tabSelectedTextColor="@color/colorAccent"
             app:tabTextColor="@color/colorPrimaryDark" />
 
+
     </android.support.design.widget.AppBarLayout>
+
 
     <com.quascenta.petersroad.droidtag.widgets.CustomViewPager
         android:id="@+id/viewpager"

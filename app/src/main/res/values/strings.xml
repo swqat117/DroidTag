@@ -10,4 +10,18 @@
     <string name="sheet_m1">sheet1</string>
     <string name="share">share</string>
     <string name="title_activity_report_list">ReportListActivity</string>
+    <string name="pending_loggers">Pending Loggers</string>
+    <string name="alerted_loggers">Alerted Loggers</string>
+    <string name="completed_loggers">Completed Loggers</string>
+    <string name="all_device_loggers">All Device Loggers</string>
+    <string name="ble_not_supported">Bluetooth is not supported in your phone</string>
+    <string name="btn_sure">OK</string>
+    <string name="btn_cancel">cancel</string>
+    <string name="ask_permission">Permission Request</string>
+    <string name="line_success">Connection Successful</string>
+    <string name="line_disconnect">Connection Disconnected</string>
+    <string name="linednum">No :</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="unknown_device">Unknown Device</string>
 </resources>
